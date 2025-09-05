@@ -1,0 +1,9 @@
+h2 {
+  color: #2c3e50;
+}
+:host {
+  display: block;
+  height: 100%;
+  padding: 20px;
+}
+

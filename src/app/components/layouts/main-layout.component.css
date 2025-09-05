@@ -1,0 +1,43 @@
+.main-container {
+  display: flex;
+  flex-grow: 1;
+  width: 100%;
+  height: calc(100vh - 70px);
+  background-color: #edf0f3;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.sidebar-container {
+  width: 200px;
+  height: 100vh;
+  overflow: hidden;
+  transition: width 0.3s ease-in-out;
+  background-color: #002655;
+  position: relative;
+  top: 0;
+}
+
+.sidebar-container.collapsed {
+  width: 60px;
+}
+
+.content {
+  flex-grow: 1;
+  padding: 20px;
+  background-color: #edf0f3;
+  overflow-y: auto;
+  height: auto;
+  transition: margin-left 0.3s ease-in-out;
+}
+
+@media (max-width: 768px) {
+  .sidebar-container {
+    width: 60px;
+  }
+
+  .content {
+    padding: 16px 10px;
+  }
+}
