@@ -2,42 +2,42 @@
   <div class="sidebar-content">
     <ul class="menu-list">
       <li class="dropdown-item" *hasRole="['admin', 'student']">
-        <a (click)="togglePracticas()" 
-           [class.dropdown-active]="isPracticasOpen"
-           [class.has-active-child]="hasActiveChildPracticas()">
+        <a (click)="togglePracticas()" [class.dropdown-active]="isPracticasOpen"
+          [class.has-active-child]="hasActiveChildPracticas()">
           <span class="active-indicator" [class.active]="isPracticasOpen || hasActiveChildPracticas()"></span>
           <ion-icon name="briefcase-outline"></ion-icon>
           <span class="label">Mis Prácticas</span>
-          <ion-icon 
-            name="chevron-down-outline" 
-            class="dropdown-arrow" 
-            [class.rotated]="isPracticasOpen">
+          <ion-icon name="chevron-down-outline" class="dropdown-arrow" [class.rotated]="isPracticasOpen">
           </ion-icon>
         </a>
         <ul class="submenu" [class.open]="isPracticasOpen">
           <li>
-            <a (click)="navigateAndClose('/oferta-laboral')" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">
+            <a (click)="navigateAndClose('/oferta-laboral')" routerLinkActive="active"
+              [routerLinkActiveOptions]="{exact: false}">
               <span class="active-indicator"></span>
               <ion-icon name="briefcase-outline"></ion-icon>
               <span class="label">Oferta Laboral</span>
             </a>
           </li>
           <li>
-            <a (click)="navigateAndClose('/carta-presentacion')" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">
+            <a (click)="navigateAndClose('/carta-presentacion')" routerLinkActive="active"
+              [routerLinkActiveOptions]="{exact: false}">
               <span class="active-indicator"></span>
               <ion-icon name="mail-open-outline"></ion-icon>
               <span class="label">Carta de Presentación</span>
             </a>
           </li>
           <li>
-            <a (click)="navigateAndClose('/mis-practicas')" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">
+            <a (click)="navigateAndClose('/mis-practicas')" routerLinkActive="active"
+              [routerLinkActiveOptions]="{exact: false}">
               <span class="active-indicator"></span>
               <ion-icon name="document-text-outline"></ion-icon>
               <span class="label">Mis prácticas</span>
             </a>
           </li>
           <li>
-            <a (click)="navigateAndClose('/solicitar-certificacion')" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">
+            <a (click)="navigateAndClose('/solicitar-certificacion')" routerLinkActive="active"
+              [routerLinkActiveOptions]="{exact: false}">
               <span class="active-indicator"></span>
               <ion-icon name="ribbon-outline"></ion-icon>
               <span class="label">Solicitar Certificación</span>
@@ -47,35 +47,34 @@
       </li>
 
       <li class="dropdown-item" *hasRole="['admin', 'reviewer']">
-        <a (click)="toggleGestion()" 
-           [class.dropdown-active]="isGestionOpen"
-           [class.has-active-child]="hasActiveChildGestion()">
+        <a (click)="toggleGestion()" [class.dropdown-active]="isGestionOpen"
+          [class.has-active-child]="hasActiveChildGestion()">
           <span class="active-indicator" [class.active]="isGestionOpen || hasActiveChildGestion()"></span>
           <ion-icon name="clipboard-outline"></ion-icon>
           <span class="label">Gestión Prácticas</span>
-          <ion-icon 
-            name="chevron-down-outline" 
-            class="dropdown-arrow" 
-            [class.rotated]="isGestionOpen">
+          <ion-icon name="chevron-down-outline" class="dropdown-arrow" [class.rotated]="isGestionOpen">
           </ion-icon>
         </a>
         <ul class="submenu" [class.open]="isGestionOpen">
           <li>
-            <a (click)="navigateAndClose('/gestion-practicas')" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">
+            <a (click)="navigateAndClose('/gestion-practicas')" routerLinkActive="active"
+              [routerLinkActiveOptions]="{exact: false}">
               <span class="active-indicator"></span>
               <ion-icon name="mail-outline"></ion-icon>
               <span class="label">Gestionar Cartas</span>
             </a>
           </li>
           <li>
-            <a (click)="navigateAndClose('/empresa')" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">
+            <a (click)="navigateAndClose('/empresa')" routerLinkActive="active"
+              [routerLinkActiveOptions]="{exact: false}">
               <span class="active-indicator"></span>
               <ion-icon name="business-outline"></ion-icon>
               <span class="label">Empresas</span>
             </a>
           </li>
           <li>
-            <a (click)="navigateAndClose('/seguimiento')" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">
+            <a (click)="navigateAndClose('/seguimiento')" routerLinkActive="active"
+              [routerLinkActiveOptions]="{exact: false}">
               <span class="active-indicator"></span>
               <ion-icon name="analytics-outline"></ion-icon>
               <span class="label">Seguimientos</span>
@@ -85,35 +84,34 @@
       </li>
 
       <li class="dropdown-item" *hasRole="['admin', 'reviewer']">
-        <a (click)="toggleSetup()" 
-           [class.dropdown-active]="isSetupOpen"
-           [class.has-active-child]="hasActiveChildSetup()">
+        <a (click)="toggleSetup()" [class.dropdown-active]="isSetupOpen"
+          [class.has-active-child]="hasActiveChildSetup()">
           <span class="active-indicator" [class.active]="isSetupOpen || hasActiveChildSetup()"></span>
           <ion-icon name="settings-outline"></ion-icon>
           <span class="label">Setup</span>
-          <ion-icon 
-            name="chevron-down-outline" 
-            class="dropdown-arrow" 
-            [class.rotated]="isSetupOpen">
+          <ion-icon name="chevron-down-outline" class="dropdown-arrow" [class.rotated]="isSetupOpen">
           </ion-icon>
         </a>
         <ul class="submenu" [class.open]="isSetupOpen">
           <li>
-            <a (click)="navigateAndClose('/practicantes')" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">
+            <a (click)="navigateAndClose('/practicantes')" routerLinkActive="active"
+              [routerLinkActiveOptions]="{exact: false}">
               <span class="active-indicator"></span>
               <ion-icon name="people-outline"></ion-icon>
               <span class="label">Practicantes</span>
             </a>
           </li>
           <li>
-            <a (click)="navigateAndClose('/tipos')" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">
+            <a (click)="navigateAndClose('/tipos')" routerLinkActive="active"
+              [routerLinkActiveOptions]="{exact: false}">
               <span class="active-indicator"></span>
               <ion-icon name="list-outline"></ion-icon>
               <span class="label">Tipo de Práctica</span>
             </a>
           </li>
           <li>
-            <a (click)="navigateAndClose('/gestion-horas')" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">
+            <a (click)="navigateAndClose('/gestion-horas')" routerLinkActive="active"
+              [routerLinkActiveOptions]="{exact: false}">
               <span class="active-indicator"></span>
               <ion-icon name="time-outline"></ion-icon>
               <span class="label">Gestión Horas</span>
@@ -123,42 +121,32 @@
       </li>
 
       <li class="dropdown-item" *hasRole="['admin', 'reviewer']">
-        <a (click)="toggleReportes()" 
-           [class.dropdown-active]="isReportesOpen"
-           [class.has-active-child]="hasActiveChildReportes()">
+        <a (click)="toggleReportes()" [class.dropdown-active]="isReportesOpen"
+          [class.has-active-child]="hasActiveChildReportes()">
           <span class="active-indicator" [class.active]="isReportesOpen || hasActiveChildReportes()"></span>
           <ion-icon name="bar-chart-outline"></ion-icon>
           <span class="label">Reportes</span>
-          <ion-icon 
-            name="chevron-down-outline" 
-            class="dropdown-arrow" 
-            [class.rotated]="isReportesOpen">
+          <ion-icon name="chevron-down-outline" class="dropdown-arrow" [class.rotated]="isReportesOpen">
           </ion-icon>
         </a>
         <ul class="submenu" [class.open]="isReportesOpen">
           <li>
-            <a (click)="navigateAndClose('/certificacion')" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">
+            <a (click)="navigateAndClose('/certificacion')" routerLinkActive="active"
+              [routerLinkActiveOptions]="{exact: false}">
               <span class="active-indicator"></span>
               <ion-icon name="ribbon-outline"></ion-icon>
               <span class="label">Certificación</span>
             </a>
           </li>
           <li>
-            <a (click)="navigateAndClose('/general-reporte')" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">
+            <a (click)="navigateAndClose('/general-reporte')" routerLinkActive="active"
+              [routerLinkActiveOptions]="{exact: false}">
               <span class="active-indicator"></span>
               <ion-icon name="document-text-outline"></ion-icon>
               <span class="label">General Reporte</span>
             </a>
           </li>
         </ul>
-      </li>
-
-      <li *hasRole="['admin', 'reviewer']">
-        <a (click)="navigateAndClose('/solicitudes')" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">
-          <span class="active-indicator"></span>
-          <ion-icon name="documents-outline"></ion-icon>
-          <span class="label">Solicitudes</span>
-        </a>
       </li>
     </ul>
   </div>
