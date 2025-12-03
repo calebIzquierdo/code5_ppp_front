@@ -1,4 +1,3 @@
-
 export const environment = {
   production: true,
   moduleId: 1836,
@@ -8,5 +7,3 @@ export const environment = {
   },
   shellApp: `http://lamb.upeu.edu.pe`,
 };
-
-

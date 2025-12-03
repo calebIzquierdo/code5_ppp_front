@@ -2,6 +2,19 @@ html, body {
   margin: 0;
   padding: 0;
   height: 100%;
-  overflow: hidden; /* bloquea scroll general */
+  overflow: hidden;
   font-family: 'Segoe UI', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+*:focus {
+  outline: none;
+}
+
+button:focus,
+a:focus {
+  outline: 2px solid transparent;
 }

@@ -1,0 +1,235 @@
+<div class="carta-presentacion-container">
+  <!-- Header con título e ícono -->
+  <div class="page-header">
+    <div class="header-content">
+      <div class="title-section">
+        <div class="icon-circle">
+          <ion-icon name="briefcase-outline"></ion-icon>
+        </div>
+        <div class="title-info">
+          <h1 class="page-title">Gestión de Prácticas</h1>
+          <p class="page-subtitle">Gestión Prácticas\Carta de Presentación</p>
+        </div>
+      </div>
+    </div>
+    <div class="header-actions">
+      <button class="btn-refresh" (click)="actualizar()" [disabled]="loading">
+        <ion-icon name="refresh-outline"></ion-icon>
+        {{ loading ? 'Actualizando...' : 'Actualizar' }}
+      </button>
+    </div>
+  </div>
+
+  <!-- Filtros superiores -->
+  <div class="filters-container">
+    <!-- Primera fila: 3 elementos -->
+    <div class="filters-row-1">
+      <div class="filter-item">
+        <label>Campus</label>
+        <select [(ngModel)]="filtroCampus" class="form-select">
+          <option value="">UPEU Lima</option>
+          <option value="lima">Campus Lima</option>
+          <option value="arequipa">Campus Arequipa</option>
+        </select>
+      </div>
+
+      <div class="filter-item">
+        <label>Facultad</label>
+        <select [(ngModel)]="filtroFacultad" class="form-select">
+          <option value="">Todos</option>
+          <option value="ingenieria">Facultad de Ingeniería</option>
+          <option value="salud">Facultad de Ciencias de la Salud</option>
+        </select>
+      </div>
+
+      <div class="filter-item">
+        <label>Escuela profesional</label>
+        <select [(ngModel)]="filtroEscuela" class="form-select">
+          <option value="">Todos</option>
+          <option value="sistemas">Ingeniería de Sistemas</option>
+          <option value="civil">Ingeniería Civil</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Segunda fila: 4 elementos -->
+    <div class="filters-row-2">
+      <div class="filter-item">
+        <label>Programa Estudio</label>
+        <select [(ngModel)]="filtroPrograma" class="form-select">
+          <option value="">2024-1</option>
+          <option value="2024-1">2024-1</option>
+          <option value="2024-2">2024-2</option>
+        </select>
+      </div>
+
+      <div class="filter-item">
+        <label>Semestre</label>
+        <select [(ngModel)]="filtroSemestre" class="form-select">
+          <option value="">EP2024-1 Tesis formato pregrado</option>
+          <option value="2025-1">EP2024-1 Tesis formato pregrado</option>
+          <option value="2024-2">EP2024-2 Prácticas profesionales</option>
+        </select>
+      </div>
+
+      <div class="filter-item">
+        <label>Tipo de Práctica</label>
+        <select [(ngModel)]="filtroTipoPractica" class="form-select">
+          <option value="">PPP</option>
+          <option value="ppp">PPP</option>
+          <option value="pasantia">Pasantía</option>
+        </select>
+      </div>
+
+      <div class="button-item">
+        <label>Filtro de búsqueda</label>
+        <button class="btn-apply" (click)="aplicarFiltros()">
+          <ion-icon name="funnel-outline"></ion-icon>
+          Aplicar búsqueda
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pestañas -->
+  <div class="tabs-container">
+    <button class="tab-btn active" [class.active]="tabActiva === 'cartas'" (click)="cambiarTab('cartas')">
+      <ion-icon name="mail-outline"></ion-icon>
+      Carta
+    </button>
+  </div>
+
+  <div class="my-div"></div>
+
+  <!-- Contenido de la tabla -->
+  <div class="table-content">
+    <!-- Barra de título y controles de la tabla -->
+    <div class="table-header">
+      <div class="table-title-section">
+        <h3 class="table-title">
+          <ion-icon name="list-outline"></ion-icon>
+          Cartas de Recomendación
+        </h3>
+      </div>
+
+      <div class="table-controls">
+        <div class="estado-control">
+          <label>Estado:</label>
+          <select [(ngModel)]="filtroEstado" class="small-select">
+            <option value="">Todos</option>
+            <option value="enviado">Enviado</option>
+            <option value="revisión">Revisión</option>
+            <option value="rechazado">Rechazado</option>
+          </select>
+        </div>
+
+        <button class="btn-sort" (click)="ordenarTabla()" title="Ordenar A-Z">
+          AZ
+        </button>
+
+        <div class="search-control">
+          <ion-icon name="search-outline"></ion-icon>
+          <input type="text" placeholder="Buscar código..." [(ngModel)]="textoBusqueda">
+        </div>
+      </div>
+    </div>
+
+    <!-- Mensaje de error -->
+    <div *ngIf="error" class="error-message">
+      <ion-icon name="alert-circle-outline"></ion-icon>
+      <span>{{ error }}</span>
+      <button (click)="actualizar()" class="retry-btn">Reintentar</button>
+    </div>
+
+    <!-- Tabla -->
+    <div class="table-wrapper">
+      <!-- Indicador de carga -->
+      <div *ngIf="loading" class="loading-indicator">
+        <ion-icon name="refresh-outline" class="spinning"></ion-icon>
+        <span>Cargando cartas...</span>
+      </div>
+
+      <table class="data-table" *ngIf="!loading">
+        <thead>
+          <tr>
+            <th>N°</th>
+            <th>Nombre del practicante</th>
+            <th>Código</th>
+            <th>E.P</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let carta of cartasPaginadas; let i = index">
+            <td class="numero">{{ formatNumber((paginaActual * itemsPorPagina) + i + 1) }}</td>
+            <td class="empresa-name">{{ carta.nombrePracticante }}</td>
+            <td class="representante-cell">{{ carta.codigo }}</td>
+            <td class="contacto-cell">{{ carta.escuelaProfesional }}</td>
+            <td class="estado-cell">
+              <span class="status-badge" [class]="'status-' + carta.estado.toLowerCase()">
+                {{ carta.estado }}
+              </span>
+            </td>
+            <td class="actions-cell">
+              <button class="action-btn yellow" title="Ver detalle">
+                <ion-icon name="eye-outline"></ion-icon>
+                Ver
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Mensaje cuando no hay datos -->
+      <div *ngIf="!loading && cartasPaginadas.length === 0" class="no-data-message">
+        <ion-icon name="document-outline"></ion-icon>
+        <span>No se encontraron cartas</span>
+        <small *ngIf="textoBusqueda || filtroEstado">Intenta ajustar los filtros de búsqueda</small>
+      </div>
+    </div>
+
+    <!-- Paginación -->
+    <div class="pagination">
+      <div class="pagination-left">
+        <span>Filas</span>
+        <select [(ngModel)]="itemsPorPagina" (change)="cambiarItemsPorPagina()" class="rows-select">
+          <option value="5">5</option>
+          <option value="10">10</option>
+          <option value="25">25</option>
+          <option value="50">50</option>
+        </select>
+      </div>
+      
+      <div class="pagination-controls">
+        <button class="page-btn" [disabled]="paginaActual === 0" (click)="irAPagina(0)">
+          <ion-icon name="play-back-outline"></ion-icon>
+        </button>
+        <button class="page-btn" [disabled]="paginaActual === 0" (click)="paginaAnterior()">
+          <ion-icon name="chevron-back-outline"></ion-icon>
+        </button>
+        
+        <div class="page-numbers">
+          <button 
+            *ngFor="let pagina of getPaginas()" 
+            class="page-number"
+            [class.active]="pagina === paginaActual + 1"
+            (click)="irAPagina(pagina - 1)">
+            {{ pagina }}
+          </button>
+        </div>
+        
+        <button class="page-btn" [disabled]="paginaActual === totalPaginas - 1" (click)="paginaSiguiente()">
+          <ion-icon name="chevron-forward-outline"></ion-icon>
+        </button>
+        <button class="page-btn" [disabled]="paginaActual === totalPaginas - 1" (click)="irAPagina(totalPaginas - 1)">
+          <ion-icon name="play-forward-outline"></ion-icon>
+        </button>
+      </div>
+
+      <span class="pagination-info">
+        {{ (paginaActual * itemsPorPagina) + 1 }} al {{ Math.min((paginaActual + 1) * itemsPorPagina, cartasFiltradas.length) }} de {{ cartasFiltradas.length }} selecciones
+      </span>
+    </div>
+  </div>
+</div>

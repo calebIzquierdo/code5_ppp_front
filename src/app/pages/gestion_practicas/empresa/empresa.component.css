@@ -1,0 +1,634 @@
+/* ==================== ESTILOS PRINCIPALES ==================== */
+.empresas-container {
+  padding: 20px;
+  background-color: #ffffff;
+  min-height: 100vh;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+}
+
+/* ==================== HEADER ==================== */
+.page-header {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border-left: 4px solid #063568;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-content {
+  flex: 1;
+}
+
+.title-section {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.icon-circle {
+  width: 40px;
+  height: 40px;
+  background: #063568;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 20px;
+}
+
+.title-info h1 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #063568;
+}
+
+.title-info p {
+  margin: 0;
+  font-size: 13px;
+  color: #666;
+}
+
+.btn-refresh {
+  background: #ffffff;
+  color: #063568;
+  border: 1px solid #063568;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.btn-refresh:hover {
+  background: #a9cbf0;
+}
+
+/* ==================== FILTROS ==================== */
+.filters-container {
+  background: white;
+  border-radius: 0px;
+  padding: 16px 20px;
+  margin-bottom: 0px;
+  display: flex;
+  gap: 20px;
+  align-items: end;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border-bottom: none;
+    justify-content: space-between;
+}
+
+.filter-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 480px;
+}
+
+.filter-item label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #333;
+}
+
+.form-select {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 13px;
+  background: white;
+}
+
+.button-item {
+  font-size: 13px;
+  font-weight: 500;
+  color: #333;;
+}
+
+.btn-apply {
+  background: #063568;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  height: fit-content;
+  min-width: 200px;
+}
+
+.btn-apply:hover {
+  background: #0056b3;
+}
+
+/* ==================== PESTAÑAS ==================== */
+.tabs-container {
+  background: white;
+  display: flex;
+  border-radius: 0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid #eee;
+  margin-bottom: 0;
+  justify-content: flex-start;
+  border-radius: 8px solid #1ad413;
+  
+}
+
+.tab-btn {
+  background: #f8f9fa;
+  border: none;
+  padding: 12px 24px;
+  font-size: 13px;
+  color: #063568;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border-bottom: 3px solid transparent;
+  justify-content: center;
+  transition: all 0.3s ease;
+  min-width: auto;
+  flex-shrink: 0;
+}
+
+.tab-btn:hover {
+  border-bottom-color: #ffc107;
+}
+
+.tab-btn.active {
+  background: white;
+  color: #063568;
+  border-bottom-color: #ffc107;
+  font-weight: 500;
+}
+
+.my-div {
+  width: 100%;
+  height: 1px;
+  right: 20px;
+  background: #a7a5a5;
+  
+}
+
+/* ==================== CONTENIDO DE LA TABLA ==================== */
+.table-content {
+  background: white;
+  border-radius: 0 0 8px 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+  
+   
+}
+
+.table-header {
+  padding: 12px 20px;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+  border-radius: 10px 10px 0 0;
+}
+
+
+.table-title-section {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.table-title {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #063568;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.table-title ion-icon {
+  color: #063568;
+}
+
+.table-controls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.estado-control {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.estado-control label {
+  font-size: 12px;
+  color: #063568;
+  font-weight: 500;
+}
+
+.small-select {
+  padding: 4px 8px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  font-size: 11px;
+  color: #063568;
+}
+
+.search-control {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-control ion-icon {
+  position: absolute;
+  left: 8px;
+  color: #999;
+  font-size: 14px;
+}
+
+.search-control input {
+  padding: 5px 12px 5px 28px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  font-size: 11px;
+  width: 150px;
+  color: #063568;
+}
+
+.btn-informe {
+  background: #063568;
+  color: white;
+  border: none;
+  padding: 6px 16px;
+  border-radius: 4px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+/* ==================== TABLA ==================== */
+.table-wrapper {
+  overflow-x: auto;
+  margin-bottom: 16px;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 13px;
+  border: 1px solid #ddd;
+  border-radius: 0 0 8px 8px;
+  overflow: hidden;
+}
+
+.data-table th {
+  padding: 6px 12px;
+  text-align: left;
+  font-weight: 600;
+  color: #333;
+  border-right: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  background: #f8f9fa;
+  text-align: center;
+}
+
+.data-table th:last-child {
+  border-right: none;
+}
+
+.data-table tbody tr:hover {
+  background: #f8f9fa;
+}
+
+.data-table td {
+  padding: 4px 12px;
+  border-right: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  
+}
+
+.data-table td:last-child {
+  border-right: none;
+}
+
+.data-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.numero {
+  text-align: center;
+  font-weight: 600;
+  width: 50px;
+  text-align: center;
+}
+
+.empresa-name {
+  font-weight: 500;
+  color: #333;
+  min-width: 180px;
+}
+
+.ruc-cell {
+  color: #666;
+  font-family: monospace;
+  font-size: 12px;
+  text-align: center;
+  
+}
+
+.encargado-cell,
+.contacto-cell {
+  color: #666;
+  font-size: 12px;
+  text-align: center;
+}
+
+.practicantes-cell {
+  
+  display: flex;
+  justify-content: center; /* horizontal */
+  align-items: center;     /* vertical */
+  height: 3.8vh;
+}
+
+.btn-desplegar {
+  background: #e3f2fd;
+  color: #1976d2;
+  border: none;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  text-align: center;
+}
+
+/* Colores para los botones desplegar */
+.btn-desplegar.pink {
+  background: #fce4ec;
+  color: #c2185b;
+}
+
+.btn-desplegar.green {
+  background: #e8f5e8;
+  color: #2e7d32;
+}
+
+.btn-desplegar.blue {
+  background: #e3f2fd;
+  color: #1976d2;
+}
+
+.btn-desplegar.purple {
+  background: #f3e5f5;
+  color: #7b1fa2;
+}
+
+.btn-desplegar.orange {
+  background: #fff3e0;
+  color: #f57c00;
+}
+
+.actions-cell {
+  text-align: center;
+}
+
+.action-btn {
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 2px;
+  font-size: 12px;
+  text-align: center;
+}
+
+.action-btn.yellow {
+  background: #00C7C0;
+  color: #ffffff;
+}
+
+.action-btn.blue {
+  background: orange;
+  color: #ffffff;
+}
+
+.action-btn.red {
+  background: red;
+  color: #ffffff;
+}
+
+.action-btn:hover {
+  transform: scale(1.1);
+}
+
+/* ==================== PAGINACIÓN ==================== */
+.pagination {
+  padding: 12px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: none;
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  margin-top: 8px;
+}
+
+.pagination-info {
+  font-size: 13px;
+  color: #063568;
+  font-weight: 500;
+}
+
+.pagination-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #063568;
+  font-weight: 500;
+}
+
+.rows-select {
+  padding: 4px 8px;
+  border: 1px solid #063568;
+  border-radius: 4px;
+  font-size: 12px;
+  color: #063568;
+  background: white;
+  min-width: 60px;
+}
+
+.pagination-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.page-btn {
+  width: 28px;
+  height: 28px;
+  border: 1.5px solid #063568;
+  background: rgb(255, 254, 254);
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  color: #063568;
+  letter-spacing: 1px;
+}
+
+.page-btn:hover:not(:disabled) {
+  background: #f0f0f0;
+}
+
+.page-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.page-numbers {
+  display: flex;
+  gap: 8px;
+  margin: 0 16px;
+}
+
+.page-number {
+  width: 28px;
+  height: 28px;
+  border: 1px solid #063568;
+  background: white;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #063568;
+  letter-spacing: 1px;
+}
+
+.page-number:hover {
+  background: #f0f0f0;
+}
+
+.page-number.active {
+  background: #063568;
+  color: white;
+  border-color: #063568;
+}
+
+/* ==================== ESTADOS DE CARGA Y ERROR ==================== */
+.loading-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  gap: 12px;
+  color: #063568;
+  font-size: 14px;
+}
+
+.loading-indicator ion-icon.spinning {
+  animation: spin 1s linear infinite;
+  font-size: 20px;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.error-message {
+  background: #ffebee;
+  border: 1px solid #f44336;
+  border-radius: 8px;
+  padding: 16px;
+  margin: 16px 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #d32f2f;
+}
+
+.error-message ion-icon {
+  font-size: 20px;
+  color: #f44336;
+}
+
+.retry-btn {
+  background: #f44336;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  cursor: pointer;
+  margin-left: auto;
+}
+
+.retry-btn:hover {
+  background: #d32f2f;
+}
+
+.no-data-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  text-align: center;
+  color: #666;
+}
+
+.no-data-message ion-icon {
+  font-size: 48px;
+  color: #ddd;
+  margin-bottom: 16px;
+}
+
+.no-data-message span {
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.no-data-message small {
+  font-size: 14px;
+  color: #999;
+}
+
+.btn-refresh:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

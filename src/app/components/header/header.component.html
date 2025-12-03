@@ -13,6 +13,11 @@
   </div>
 
   <div class="right-section">
+    <button class="role-toggle-btn" (click)="toggleRoleSwitcher()" title="Cambiar rol">
+      <ion-icon name="shield-outline"></ion-icon>
+      <span class="role-btn-text">ROLES</span>
+    </button>
+    <div class="separator"></div>
     <ion-icon name="apps" class="apps-icon"></ion-icon>
     <div class="separator"></div>
     <img src="../../../assets/img/perfil.png" alt="Foto" class="user-img" />
@@ -23,3 +28,13 @@
   </div>
 </header>
 
+<!-- Role Switcher Overlay -->
+<div class="role-switcher-overlay" *ngIf="showRoleSwitcher" (click)="toggleRoleSwitcher()">
+  <div class="role-switcher-panel" (click)="$event.stopPropagation()">
+    <app-role-switcher></app-role-switcher>
+    <button class="close-btn" (click)="toggleRoleSwitcher()">
+      <ion-icon name="close-outline"></ion-icon>
+      Cerrar
+    </button>
+  </div>
+</div>

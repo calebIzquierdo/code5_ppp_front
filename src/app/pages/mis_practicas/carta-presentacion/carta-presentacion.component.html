@@ -1,0 +1,294 @@
+<div class="carta-presentacion-container">
+  <!-- Header con título e ícono -->
+  <div class="page-header">
+    <div class="header-content">
+      <div class="title-section">
+        <div class="icon-circle">
+          <ion-icon name="document-text-outline"></ion-icon>
+        </div>
+        <div class="title-info">
+          <h1 class="page-title">Carta de Presentación</h1>
+          <p class="page-subtitle">Mis Prácticas\Carta de Presentación</p>
+        </div>
+      </div>
+    </div>
+    <div class="header-actions">
+      <button class="btn-solicitar" (click)="solicitarCarta()">
+        <ion-icon name="add-outline"></ion-icon>
+        Solicitar Carta
+      </button>
+      <button class="btn-refresh" (click)="actualizar()" [disabled]="loading">
+        <ion-icon name="refresh-outline"></ion-icon>
+        {{ loading ? 'Actualizando...' : 'Actualizar' }}
+      </button>
+    </div>
+  </div>
+
+  <!-- Filtros superiores -->
+  <div class="filters-container">
+    <div class="filter-item">
+      <label>Campus</label>
+      <select [(ngModel)]="filtroCampus" class="form-select">
+        <option value="">Selecciona Campus</option>
+        <option value="lima">Campus Lima</option>
+        <option value="arequipa">Campus Arequipa</option>
+      </select>
+    </div>
+
+    <div class="filter-item">
+      <label>Escuela Profesional</label>
+      <select [(ngModel)]="filtroEscuela" class="form-select">
+        <option value="">Selecciona E.P.</option>
+        <option value="sistemas">Ingeniería de Sistemas</option>
+        <option value="civil">Ingeniería Civil</option>
+      </select>
+    </div>
+
+    <div class="filter-item">
+      <label>Semestre Académico</label>
+      <select [(ngModel)]="filtroSemestre" class="form-select">
+        <option value="2025-2">2025-2</option>
+        <option value="2025-1">2025-1</option>
+        <option value="2024-2">2024-2</option>
+      </select>
+    </div>
+
+    <div class="button-item">
+      <label>Filtro de búsqueda</label>
+      <button class="btn-apply" (click)="aplicarFiltros()">
+        <ion-icon name="funnel-outline"></ion-icon>
+        Aplicar búsqueda
+      </button>
+    </div>
+  </div>
+
+ 
+
+  <!-- Pestañas -->
+  <div class="tabs-container">
+    <button class="tab-btn active" [class.active]="tabActiva === 'cartas'" (click)="cambiarTab('cartas')">
+      <ion-icon name="mail-outline"></ion-icon>
+      Cartas
+    </button>
+  </div>
+
+  <div class="my-div"></div>
+
+  <!-- Contenido de la tabla -->
+  <div class="table-content">
+    <!-- Barra de título y controles de la tabla -->
+    <div class="table-header">
+      <div class="table-title-section">
+        <h3 class="table-title">
+          <ion-icon name="list-outline"></ion-icon>
+          Cartas de Recomendación
+        </h3>
+      </div>
+
+      <div class="table-controls">
+              <div class="table-controls">
+        <div class="estado-control">
+          <label>Estado:</label>
+          <select [(ngModel)]="filtroEstado" class="small-select">
+            <option value="">Todos</option>
+            <option value="pendiente">Pendiente</option>
+            <option value="aprobado">Aprobado</option>
+            <option value="rechazado">Rechazado</option>
+          </select>
+        </div>
+
+        <button class="btn-sort" (click)="ordenarTabla()" title="Ordenar A-Z">
+          AZ
+        </button>
+
+        <div class="search-control">
+          <ion-icon name="search-outline"></ion-icon>
+          <input type="text" placeholder="Buscar código..." [(ngModel)]="textoBusqueda">
+        </div>
+      </div>
+      </div>
+    </div>
+
+    <!-- Mensaje de error -->
+    <div *ngIf="error" class="error-message">
+      <ion-icon name="alert-circle-outline"></ion-icon>
+      <span>{{ error }}</span>
+      <button (click)="actualizar()" class="retry-btn">Reintentar</button>
+    </div>
+
+    <!-- Tabla -->
+    <div class="table-wrapper">
+      <!-- Indicador de carga -->
+      <div *ngIf="loading" class="loading-indicator">
+        <ion-icon name="refresh-outline" class="spinning"></ion-icon>
+        <span>Cargando cartas...</span>
+      </div>
+
+      <table class="data-table" *ngIf="!loading">
+        <thead>
+          <tr>
+            <th>N°</th>
+            <th>Nombre de Empresa</th>
+            <th>Representante Legal</th>
+            <th>Contacto</th>
+            <th>Estado</th>
+            <th>Detalle</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let carta of cartasPaginadas; let i = index">
+            <td class="numero">{{ formatNumber((paginaActual * itemsPorPagina) + i + 1) }}</td>
+            <td class="empresa-name">{{ carta.nombreEmpresa }}</td>
+            <td class="representante-cell">{{ carta.representanteLegal }}</td>
+            <td class="contacto-cell">{{ carta.contacto }}</td>
+            <td class="estado-cell">
+              <span class="status-badge" [class]="'status-' + carta.estado.toLowerCase()">
+                {{ carta.estado }}
+              </span>
+            </td>
+            <td class="actions-cell">
+              <button class="action-btn yellow" title="Ver detalle">
+                <ion-icon name="eye-outline"></ion-icon>
+                Ver
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Mensaje cuando no hay datos -->
+      <div *ngIf="!loading && cartasPaginadas.length === 0" class="no-data-message">
+        <ion-icon name="document-outline"></ion-icon>
+        <span>No se encontraron empresas</span>
+        <small *ngIf="textoBusqueda || filtroEstado">Intenta ajustar los filtros de búsqueda</small>
+      </div>
+    </div>
+
+    <!-- Paginación -->
+    <div class="pagination">
+      <div class="pagination-left">
+        <span>Filas</span>
+        <select [(ngModel)]="itemsPorPagina" (change)="cambiarItemsPorPagina()" class="rows-select">
+          <option value="5">5</option>
+          <option value="10">10</option>
+          <option value="25">25</option>
+          <option value="50">50</option>
+        </select>
+      </div>
+      
+      <div class="pagination-controls">
+        <button class="page-btn" [disabled]="paginaActual === 0" (click)="irAPagina(0)">
+          <ion-icon name="play-back-outline"></ion-icon>
+        </button>
+        <button class="page-btn" [disabled]="paginaActual === 0" (click)="paginaAnterior()">
+          <ion-icon name="chevron-back-outline"></ion-icon>
+        </button>
+        
+        <div class="page-numbers">
+          <button 
+            *ngFor="let pagina of getPaginas()" 
+            class="page-number"
+            [class.active]="pagina === paginaActual + 1"
+            (click)="irAPagina(pagina - 1)">
+            {{ pagina }}
+          </button>
+        </div>
+        
+        <button class="page-btn" [disabled]="paginaActual === totalPaginas - 1" (click)="paginaSiguiente()">
+          <ion-icon name="chevron-forward-outline"></ion-icon>
+        </button>
+        <button class="page-btn" [disabled]="paginaActual === totalPaginas - 1" (click)="irAPagina(totalPaginas - 1)">
+          <ion-icon name="play-forward-outline"></ion-icon>
+        </button>
+      </div>
+
+      <span class="pagination-info">
+        {{ (paginaActual * itemsPorPagina) + 1 }} al {{ Math.min((paginaActual + 1) * itemsPorPagina, cartasFiltradas.length) }} de {{ cartasFiltradas.length }} solicitudes
+      </span>
+    </div>
+  </div>
+
+  <!-- Modal de Solicitud -->
+  <div class="modal-overlay" *ngIf="mostrarModal" (click)="cerrarModal()">
+    <div class="modal-container" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <ion-icon name="add-outline" class="header-icon"></ion-icon>
+        <h2>Solicitud de Carta de Presentación</h2>
+      </div>
+      
+      <div class="modal-body" (scroll)="onModalScroll($event)">
+        <form>
+          <!-- Empresa -->
+          <div class="form-group">
+            <label>Empresa</label>
+            <select [(ngModel)]="solicitud.empresa" name="empresa" class="form-control">
+              <option value="">Selecciona empresa</option>
+              <option value="empresa1">Empresa 1</option>
+              <option value="empresa2">Empresa 2</option>
+            </select>
+          </div>
+
+          <!-- Nueva empresa -->
+          <div class="form-group">
+            <label>Nueva empresa</label>
+            <input type="text" [(ngModel)]="solicitud.nuevaEmpresa" name="nuevaEmpresa" 
+                   placeholder="Escribe empresa" class="form-control">
+          </div>
+
+          <!-- Grado Académico de Responsable -->
+          <div class="form-group">
+            <label>Grado Académico de Responsable</label>
+            <input type="text" [(ngModel)]="solicitud.gradoAcademico" name="gradoAcademico" 
+                   placeholder="Ingresar grado académico" class="form-control">
+          </div>
+
+          <!-- Cargo del Responsable -->
+          <div class="form-group">
+            <label>Cargo del Responsable</label>
+            <input type="text" [(ngModel)]="solicitud.cargoResponsable" name="cargoResponsable" 
+                   placeholder="Ingresar cargo de responsable dentro de establecimiento" class="form-control">
+          </div>
+
+          <!-- Representante Legal -->
+          <div class="form-group">
+            <label>Representante Legal</label>
+            <input type="text" [(ngModel)]="solicitud.representanteLegal" name="representanteLegal" 
+                   placeholder="Ingresar nombre de representante" class="form-control">
+          </div>
+
+          <!-- Procedencia de Empresa -->
+          <div class="form-group">
+            <label>Procedencia de Empresa</label>
+            <input type="text" [(ngModel)]="solicitud.procedenciaEmpresa" name="procedenciaEmpresa" 
+                   placeholder="Ingresar Procedencia" class="form-control">
+          </div>
+
+          <!-- Horas -->
+          <div class="form-group">
+            <label>Horas</label>
+            <input type="text" [(ngModel)]="solicitud.horas" name="horas" 
+                   placeholder="Horas por cumplir" class="form-control">
+          </div>
+
+          <!-- Contacto -->
+          <div class="form-group">
+            <label>Contacto</label>
+            <input type="text" [(ngModel)]="solicitud.contacto" name="contacto" 
+                   placeholder="Ingresar forma de contacto" class="form-control">
+          </div>
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn-cancelar" (click)="cerrarModal()">
+          <ion-icon name="close-outline"></ion-icon>
+          Cancelar
+        </button>
+        <button type="button" class="btn-enviar" (click)="enviarSolicitud()">
+          <ion-icon name="checkmark-outline"></ion-icon>
+          Enviar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

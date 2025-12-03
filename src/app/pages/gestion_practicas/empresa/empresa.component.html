@@ -1,0 +1,206 @@
+<div class="empresas-container">
+  <!-- Header con título e ícono -->
+  <div class="page-header">
+    <div class="header-content">
+      <div class="title-section">
+        <div class="icon-circle">
+          <ion-icon name="business-outline"></ion-icon>
+        </div>
+        <div class="title-info">
+          <h1 class="page-title">Empresas</h1>
+          <p class="page-subtitle">Inicio/Solicitud de Convenio</p>
+        </div>
+      </div>
+    </div>
+    <button class="btn-refresh" (click)="refrescarDatos()" [disabled]="loading">
+      <ion-icon name="refresh-outline"></ion-icon>
+      {{ loading ? 'Actualizando...' : 'Actualizar' }}
+    </button>
+  </div>
+
+  <!-- Filtros superiores -->
+  <div class="filters-container">
+    <div class="filter-item">
+      <label>RUC</label>
+      <select [(ngModel)]="filtroRuc" class="form-select">
+        <option value="">Selecciona E.P.</option>
+        <option value="20123456789">20123456789 - Tech Solutions</option>
+        <option value="20987654321">20987654321 - Educativa Moderna</option>
+      </select>
+    </div>
+
+    <div class="filter-item">
+      <label>Semestre Académico</label>
+      <select [(ngModel)]="filtroSemestre" class="form-select">
+        <option value="2025-2">2025-2</option>
+        <option value="2024-2">2024-2</option>
+        <option value="2024-1">2024-1</option>
+      </select>
+    </div>
+    <div class="button-item">
+      <label>Filtrar Búsqueda</label>
+      <button class="btn-apply" (click)="aplicarFiltros()">
+      <ion-icon name="funnel-outline"></ion-icon>
+      Aplicar búsqueda
+    </button>
+    </div>
+    
+  </div>
+
+  <!-- Pestañas -->
+  <div class="tabs-container">
+    <button class="tab-btn active" [class.active]="tabActiva === 'solicitudes'">
+      <ion-icon name="document-text-outline"></ion-icon>
+      Solicitudes
+    </button>
+    <button class="tab-btn" [class.active]="tabActiva === 'cartas'">
+      <ion-icon name="mail-outline"></ion-icon>
+      Cartas
+    </button>
+    
+  </div>
+  <div class="my-div">
+
+    </div>
+
+  <!-- Contenido de la tabla -->
+  <div class="table-content">
+    <!-- Barra de título y controles de la tabla -->
+    <div class="table-header">
+      <div class="table-title-section">
+        <h3 class="table-title">
+          <ion-icon name="list-outline"></ion-icon>
+          Solicitudes para Convenio
+        </h3>
+      </div>
+
+      <div class="table-controls">
+        <div class="estado-control">
+          <label>Estado:</label>
+          <select [(ngModel)]="filtroEstado" class="small-select">
+            <option value="">Todos</option>
+            <option value="pendiente">Pendiente</option>
+            <option value="aprobado">Aprobado</option>
+          </select>
+        </div>
+
+        <div class="search-control">
+          <ion-icon name="search-outline"></ion-icon>
+          <input type="text" placeholder="Buscar código..." [(ngModel)]="textoBusqueda">
+        </div>
+
+        <button class="btn-informe">
+          <ion-icon name="document-text-outline"></ion-icon>
+          Informe
+        </button>
+      </div>
+    </div>
+
+    <!-- Mensaje de error -->
+    <div *ngIf="error" class="error-message">
+      <ion-icon name="alert-circle-outline"></ion-icon>
+      <span>{{ error }}</span>
+      <button (click)="refrescarDatos()" class="retry-btn">Reintentar</button>
+    </div>
+
+    <!-- Tabla -->
+    <div class="table-wrapper">
+      <!-- Indicador de carga -->
+      <div *ngIf="loading" class="loading-indicator">
+        <ion-icon name="refresh-outline" class="spinning"></ion-icon>
+        <span>Cargando empresas...</span>
+      </div>
+
+      <table class="data-table" *ngIf="!loading">
+        <thead>
+          <tr>
+            <th>N°</th>
+            <th>Nombre de Empresa</th>
+            <th>RUC</th>
+            <th>Encargado</th>
+            <th>Contacto</th>
+            <th>Practicantes</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let empresa of empresasPaginadas; let i = index">
+            <td class="numero">{{ (paginaActual * itemsPorPagina) + i + 1 }}</td>
+            <td class="empresa-name">{{ empresa.nombre }}</td>
+            <td class="ruc-cell">{{ empresa.ruc }}</td>
+            <td class="encargado-cell">{{ empresa.encargado }}</td>
+            <td class="contacto-cell">{{ empresa.telefono }}</td>
+            <td class="practicantes-cell">
+              <button class="btn-desplegar" [class]="getBadgeClass(i)">
+                <ion-icon name="chevron-down-outline"></ion-icon>
+                Desplegar
+              </button>
+            </td>
+            <td class="actions-cell">
+                <button class="action-btn blue" title="Ver">
+                <ion-icon name="eye-outline"></ion-icon>
+              </button>
+              <button class="action-btn yellow" title="Editar">
+                <ion-icon name="create-outline"></ion-icon>
+              </button>
+              
+              <button class="action-btn red" title="Eliminar">
+                <ion-icon name="trash-outline"></ion-icon>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Mensaje cuando no hay datos -->
+      <div *ngIf="!loading && empresasPaginadas.length === 0" class="no-data-message">
+        <ion-icon name="business-outline"></ion-icon>
+        <span>No se encontraron empresas</span>
+        <small *ngIf="textoBusqueda || filtroRuc || filtroEstado">Intenta ajustar los filtros de búsqueda</small>
+      </div>
+    </div>
+
+    <!-- Paginación -->
+    <div class="pagination">
+      <div class="pagination-left">
+        <span>Filas</span>
+        <select [(ngModel)]="itemsPorPagina" (change)="cambiarItemsPorPagina()" class="rows-select">
+          <option value="5">5</option>
+          <option value="10">10</option>
+          <option value="25">25</option>
+          <option value="50">50</option>
+        </select>
+      </div>
+      
+      <div class="pagination-controls">
+        <button class="page-btn" [disabled]="paginaActual === 0" (click)="irAPagina(0)">
+          <ion-icon name="play-back-outline"></ion-icon>
+        </button>
+        <button class="page-btn" [disabled]="paginaActual === 0" (click)="paginaAnterior()">
+          <ion-icon name="chevron-back-outline"></ion-icon>
+        </button>
+        
+        <div class="page-numbers">
+          <button 
+            *ngFor="let pagina of getPaginas()" 
+            class="page-number"
+            [class.active]="pagina === paginaActual + 1"
+            (click)="irAPagina(pagina - 1)">
+            {{ pagina }}
+          </button>
+        </div>
+        
+        <button class="page-btn" [disabled]="paginaActual === totalPaginas - 1" (click)="paginaSiguiente()">
+          <ion-icon name="chevron-forward-outline"></ion-icon>
+        </button>
+        <button class="page-btn" [disabled]="paginaActual === totalPaginas - 1" (click)="irAPagina(totalPaginas - 1)">
+          <ion-icon name="play-forward-outline"></ion-icon>
+        </button>
+      </div>
+
+      <span class="pagination-info">
+        {{ (paginaActual * itemsPorPagina) + 1 }} al {{ Math.min((paginaActual + 1) * itemsPorPagina, empresasFiltradas.length) }} de {{ empresasFiltradas.length }} enviados
+      </span>
+    </div>
+  </div>
+</div>

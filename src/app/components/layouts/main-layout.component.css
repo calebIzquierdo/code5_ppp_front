@@ -1,6 +1,5 @@
 .main-container {
   display: flex;
-  flex-grow: 1;
   width: 100%;
   height: calc(100vh - 70px);
   background-color: #edf0f3;
@@ -10,34 +9,60 @@
 }
 
 .sidebar-container {
-  width: 200px;
-  height: 100vh;
+  height: calc(100vh - 70px);
   overflow: hidden;
-  transition: width 0.3s ease-in-out;
-  background-color: #002655;
+  transition: all 0.3s ease-in-out;
   position: relative;
-  top: 0;
-}
-
-.sidebar-container.collapsed {
-  width: 60px;
+  flex-shrink: 0;
 }
 
 .content {
-  flex-grow: 1;
-  padding: 20px;
+  flex: 1;
+  padding: 24px;
   background-color: #edf0f3;
   overflow-y: auto;
-  height: auto;
-  transition: margin-left 0.3s ease-in-out;
+  overflow-x: hidden;
+  height: calc(100vh - 70px);
+  transition: all 0.3s ease-in-out;
+  min-height: calc(100vh - 70px);
+}
+
+.content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.content::-webkit-scrollbar-track {
+  background: #d1d8dd;
+  border-radius: 4px;
+}
+
+.content::-webkit-scrollbar-thumb {
+  background: #9ca8b3;
+  border-radius: 4px;
+}
+
+.content::-webkit-scrollbar-thumb:hover {
+  background: #7a8894;
+}
+
+.content {
+  scrollbar-width: thin;
+  scrollbar-color: #9ca8b3 #d1d8dd;
 }
 
 @media (max-width: 768px) {
   .sidebar-container {
-    width: 60px;
+    position: fixed;
+    left: 0;
+    top: 70px;
+    z-index: 100;
+    background-color: #002655;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.2);
   }
 
   .content {
-    padding: 16px 10px;
+    padding: 16px 12px;
+    width: 100%;
+    margin-left: 0;
   }
 }

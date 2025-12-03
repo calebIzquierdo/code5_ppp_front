@@ -1,0 +1,42 @@
+<div class="role-switcher">
+    <div class="role-switcher-header">
+        <ion-icon name="shield-outline"></ion-icon>
+        <span class="title">Simulador de Roles</span>
+
+        <span class="badge" [class.simulated]="roleState.isSimulated">
+            {{ roleState.isSimulated ? 'SIMULADO' : 'REAL' }}
+        </span>
+    </div>
+
+    <div class="current-role" *ngIf="roleState.currentRole">
+        <div class="role-info">
+            <strong>{{ roleState.currentRole.displayName }}</strong>
+            <small>{{ roleState.currentRole.description }}</small>
+        </div>
+        <div class="role-level">Nivel {{ roleState.currentRole.level }}</div>
+    </div>
+
+    <div class="role-selector">
+        <label for="roleSelect">Cambiar a:</label>
+        <select id="roleSelect" [(ngModel)]="selectedRoleId" (change)="onRoleChange()" class="role-dropdown">
+            <option value="">-- Seleccionar rol --</option>
+            <option *ngFor="let role of availableRoles" [value]="role.id">
+                {{ role.displayName }} (Nivel {{ role.level }})
+            </option>
+        </select>
+    </div>
+
+    <div class="actions">
+        <button type="button" class="btn-clear" (click)="clearRole()" [disabled]="!roleState.currentRole">
+            <ion-icon name="log-out-outline"></ion-icon>
+            Limpiar Rol
+        </button>
+    </div>
+
+    <div class="debug-info" *ngIf="showDebug">
+        <details>
+            <summary>Debug Info</summary>
+            <pre>{{ roleState | json }}</pre>
+        </details>
+    </div>
+</div>
