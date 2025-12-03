@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, CUSTOM_ELEMENTS_SCHEMA, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { EmpresaService, LegalPerson } from '../../../core/services/empresa.service';
+import { EmpresaService, LegalPerson } from '../../../core/services/empresa/empresa.service';
 
 export interface Empresa {
   id: number;

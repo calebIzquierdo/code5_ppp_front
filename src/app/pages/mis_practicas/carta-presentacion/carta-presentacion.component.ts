@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, CUSTOM_ELEMENTS_SCHEMA, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { CartaPresentacionService, CartaSolicitud } from '../../../core/services/carta-presentacion.service';
+import { CartaPresentacionService, CartaSolicitud } from '../../../core/services/carta-presentacion/carta-presentacion.service';
 import { HasPermissionDirective, HasRoleDirective } from '../../../core/security/directives/permission.directive';
 
 export interface CartaPresentacion {

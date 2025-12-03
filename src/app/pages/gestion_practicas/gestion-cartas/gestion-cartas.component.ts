@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, CUSTOM_ELEMENTS_SCHEMA, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { GestionPracticasService, CartaPracticante } from '../../../core/services/gestion-cartas.service';
+import { GestionPracticasService, CartaPracticante } from '../../../core/services/gestion-cartas/gestion-cartas.service';
 
 @Component({
   selector: 'app-gestion-cartas',
