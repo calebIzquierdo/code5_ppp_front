@@ -1,185 +1,200 @@
 import { CommonModule } from '@angular/common';
 import { Component, CUSTOM_ELEMENTS_SCHEMA, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { CartaPresentacionService, CartaSolicitud } from '../../../core/services/carta-presentacion/carta-presentacion.service';
+import { forkJoin } from 'rxjs';
+import {
+  CartaPresentacion,
+  FiltrosDisponibles,
+  AlumnoDefaults,
+  AlumnoInfo,
+  Empresa
+} from '../../../core/interfaces/carta-presentacion/carta-presentacion.interface';
+import { CartaPresentacionService } from '../../../core/services/carta-presentacion/carta-presentacion.service';
 import { HasPermissionDirective, HasRoleDirective } from '../../../core/security/directives/permission.directive';
-
-export interface CartaPresentacion {
-  id: number;
-  nombreEmpresa: string;
-  representanteLegal: string;
-  contacto: string;
-  estado: 'Aprobado' | 'Revisión' | 'Rechazado';
-  fechaCreacion: Date;
-  gradoAcademico?: string;
-  cargoResponsable?: string;
-  procedenciaEmpresa?: string;
-  horas?: string;
-}
+import { CartaFiltersComponent } from './components/carta-filters/carta-filters.component';
+import { CartaListComponent } from './components/carta-list/carta-list.component';
+import { CartaFormModalComponent } from './components/carta-form-modal/carta-form-modal.component';
 
 @Component({
   selector: 'app-carta-presentacion',
   standalone: true,
-  imports: [CommonModule, FormsModule, HasPermissionDirective, HasRoleDirective],
+  imports: [
+    CommonModule,
+    HasPermissionDirective,
+    HasRoleDirective,
+    CartaFiltersComponent,
+    CartaListComponent,
+    CartaFormModalComponent
+  ],
   templateUrl: './carta-presentacion.component.html',
   styleUrl: './carta-presentacion.component.css',
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class CartaPresentacionComponent implements OnInit {
-  // Hacer Math disponible en el template
-  Math = Math;
-  
-  // Estados de carga
+  idAlumno = 1131;
   loading = false;
   error: string | null = null;
-  
-  // Propiedades de filtros
-  filtroCampus: string = '';
-  filtroEscuela: string = '';
-  filtroSemestre: string = '2025-2';
-  filtroEstado: string = '';
-  textoBusqueda: string = '';
-
-  // Propiedades de tabs
-  tabActiva: 'solicitudes' | 'cartas' = 'cartas';
-
-  // Propiedades de paginación
-  paginaActual: number = 0;
-  itemsPorPagina: number = 10;
-  totalPaginas: number = 0;
-
-  // Datos originales de la API
-  cartasSolicitudFromApi: CartaSolicitud[] = [];
-
-  // Datos de cartas
+  alumnoDefaults: AlumnoDefaults | null = null;
+  alumnoInfo: AlumnoInfo | null = null;
+  filtroCampus: number | null = null;
+  filtroEscuela: number | null = null;
+  // filtroSemestre: number | null = null;
+  filtroEstado: number | null = null;
+  textoBusqueda = '';
+  filtrosDisponibles: FiltrosDisponibles = {
+    programas: [],
+    campus: [],
+    estados: [],
+    // semestres: []
+  };
+  paginaActual = 0;
+  itemsPorPagina = 10;
+  totalPaginas = 0;
   cartas: CartaPresentacion[] = [];
-
-  // Arrays calculados
   cartasFiltradas: CartaPresentacion[] = [];
   cartasPaginadas: CartaPresentacion[] = [];
+  mostrarModal = false;
+  empresas: Empresa[] = [];
+  cargandoEmpresas = false;
+  ordenAscendente = true;
+  toastExito = false;
 
-  // Propiedades para el modal
-  mostrarModal: boolean = false;
-  solicitud = {
-    empresa: '',
-    nuevaEmpresa: '',
-    gradoAcademico: '',
-    cargoResponsable: '',
-    representanteLegal: '',
-    procedenciaEmpresa: '',
-    horas: '',
-    contacto: ''
-  };
+  constructor(private cartaPresentacionService: CartaPresentacionService) { }
 
-  constructor(private cartaPresentacionService: CartaPresentacionService) {}
-
-  ngOnInit() {
-    this.cargarCartasDesdeApi();
+  ngOnInit(): void {
+    this.cargarDatosIniciales();
+    this.cargarEmpresas();
   }
 
-  /**
-   * Carga cartas desde la API
-   */
-  cargarCartasDesdeApi(): void {
+  cargarDatosIniciales(): void {
+    this.loading = true;
+    forkJoin({
+      alumnoInfo: this.cartaPresentacionService.getAlumnoInfo(this.idAlumno),
+      defaults: this.cartaPresentacionService.getAlumnoDefaults(this.idAlumno),
+      filtros: this.cartaPresentacionService.getFiltros(this.idAlumno)
+    }).subscribe({
+      next: (result) => {
+        this.alumnoInfo = result.alumnoInfo;
+        this.alumnoDefaults = result.defaults;
+        this.filtroCampus = result.defaults.id_campus;
+        this.filtroEscuela = result.defaults.id_programa_estudio;
+        this.filtrosDisponibles = result.filtros;
+
+        // if (result.filtros.semestres.length > 0) {
+        //   this.filtroSemestre = result.filtros.semestres[0].id_semestre;
+        // }
+
+        this.cargarCartas();
+      },
+      error: (err) => {
+        console.error('Error al cargar datos iniciales:', err);
+        this.error = 'Error al cargar información inicial';
+        this.loading = false;
+      }
+    });
+  }
+
+  cargarEmpresas(): void {
+    this.cargandoEmpresas = true;
+    this.cartaPresentacionService.getEmpresas().subscribe({
+      next: (empresas) => {
+        this.empresas = empresas;
+        this.cargandoEmpresas = false;
+      },
+      error: (error) => {
+        console.error('Error al cargar empresas:', error);
+        this.cargandoEmpresas = false;
+      }
+    });
+  }
+
+  cargarCartas(): void {
     this.loading = true;
     this.error = null;
+    const filtros = {
+      estado: this.filtroEstado ?? undefined,
+      id_campus: this.filtroCampus ?? undefined,
+      id_programa_estudio: this.filtroEscuela ?? undefined
+    };
 
-    this.cartaPresentacionService.getCartasSolicitud().subscribe({
-      next: (cartasSolicitud) => {
-        this.cartasSolicitudFromApi = cartasSolicitud || [];
-        
-        // Convertir datos de la API al formato interno
-        this.cartas = this.convertirCartasSolicitudACartas(this.cartasSolicitudFromApi);
-        
+    this.cartaPresentacionService.getCartas(this.idAlumno, filtros).subscribe({
+      next: (cartas) => {
+        this.cartas = cartas.map(carta => ({
+          ...carta,
+          estado_nombre: this.cartaPresentacionService.mapearEstadoNombre(carta.estado)
+        }));
         this.aplicarFiltros();
         this.loading = false;
       },
-      error: (error) => {
-        this.error = error.message || 'Error desconocido al cargar cartas';
+      error: (err) => {
+        console.error('Error al cargar cartas:', err);
+        this.error = err.message || 'Error al cargar cartas';
         this.loading = false;
-        
-        // Mantener arreglo vacío en caso de error
         this.cartas = [];
         this.aplicarFiltros();
       }
     });
   }
 
-  /**
-   * Convierte CartaSolicitud[] a CartaPresentacion[]
-   */
-  private convertirCartasSolicitudACartas(cartasSolicitud: CartaSolicitud[]): CartaPresentacion[] {
-    if (!cartasSolicitud || !Array.isArray(cartasSolicitud)) {
-      return [];
-    }
+  onFiltrosChange(filtros: any): void {
+    this.filtroCampus = filtros.campus;
+    this.filtroEscuela = filtros.escuela;
+    // this.filtroSemestre = filtros.semestre;
+    this.cargarCartas();
+  }
 
-    return cartasSolicitud.map((cartaSolicitud) => {
-      const carta: CartaPresentacion = {
-        id: cartaSolicitud.id_formato,
-        nombreEmpresa: cartaSolicitud.nombre_empresa,
-        representanteLegal: cartaSolicitud.representante_legal,
-        contacto: cartaSolicitud.contacto,
-        estado: this.cartaPresentacionService.mapearEstado(cartaSolicitud.estado),
-        fechaCreacion: new Date(cartaSolicitud.fecha_emision),
-        gradoAcademico: cartaSolicitud.grado_academico,
-        cargoResponsable: cartaSolicitud.cargo_responsable,
-        procedenciaEmpresa: cartaSolicitud.procedencia_empresa,
-        horas: cartaSolicitud.horas
-      };
-      
-      return carta;
+  onEstadoChange(estado: number | null): void {
+    this.filtroEstado = estado;
+    this.cargarCartas();
+  }
+
+  onBuscar(texto: string): void {
+    this.textoBusqueda = texto;
+    this.aplicarFiltros();
+  }
+
+  onOrdenar(): void {
+    this.ordenAscendente = !this.ordenAscendente;
+    this.cartasFiltradas.sort((a, b) => {
+      const comp = a.nombre_empresa.localeCompare(b.nombre_empresa, 'es', { sensitivity: 'base' });
+      return this.ordenAscendente ? comp : -comp;
     });
+    this.actualizarPaginaActual();
   }
 
-  /**
-   * Refresca los datos desde la API
-   */
-  refrescarDatos(): void {
-    this.cargarCartasDesdeApi();
+  onCambiarPagina(pagina: number): void {
+    this.irAPagina(pagina);
   }
 
-  // Métodos de filtrado
+  onCambiarItemsPorPagina(items: number): void {
+    this.itemsPorPagina = items;
+    this.cambiarItemsPorPagina();
+  }
+
+  onVerDetalle(event: { id: number; carta: CartaPresentacion }): void {
+    console.log('Ver detalle (padre):', event.id, event.carta);
+  }
+
   aplicarFiltros(): void {
     let cartasFiltradas = [...this.cartas];
-
-    // Filtro por estado
-    if (this.filtroEstado) {
-      cartasFiltradas = cartasFiltradas.filter(carta => 
-        carta.estado.toLowerCase() === this.filtroEstado.toLowerCase()
+    if (this.textoBusqueda.trim()) {
+      const term = this.textoBusqueda.toLowerCase();
+      cartasFiltradas = cartasFiltradas.filter(carta =>
+        carta.nombre_empresa.toLowerCase().includes(term) ||
+        (carta.representante_legal && carta.representante_legal.toLowerCase().includes(term)) ||
+        (carta.contacto && carta.contacto.includes(term)) ||
+        carta.id_formato.toString().includes(term)
       );
     }
-
-    // Filtro de búsqueda (usando el servicio si hay datos de la API)
-    if (this.textoBusqueda) {
-      if (this.cartasSolicitudFromApi.length > 0) {
-        // Usar el filtro del servicio
-        const cartasFiltered = this.cartaPresentacionService.filterCartas(this.textoBusqueda, this.cartasSolicitudFromApi);
-        if (cartasFiltered.length > 0) {
-          const idsFiltered = cartasFiltered.map(cs => cs.id_formato);
-          cartasFiltradas = cartasFiltradas.filter(carta => 
-            idsFiltered.includes(carta.id)
-          );
-        } else {
-          cartasFiltradas = [];
-        }
-      } else {
-        // Fallback: filtrar localmente
-        cartasFiltradas = cartasFiltradas.filter(carta =>
-          carta.nombreEmpresa.toLowerCase().includes(this.textoBusqueda.toLowerCase()) ||
-          carta.representanteLegal.toLowerCase().includes(this.textoBusqueda.toLowerCase()) ||
-          carta.contacto.includes(this.textoBusqueda)
-        );
-      }
-    }
-
     this.cartasFiltradas = cartasFiltradas;
     this.calcularPaginacion();
     this.actualizarPaginaActual();
   }
 
-  // Métodos de paginación
   calcularPaginacion(): void {
     this.totalPaginas = Math.ceil(this.cartasFiltradas.length / this.itemsPorPagina);
+    if (this.paginaActual >= this.totalPaginas && this.totalPaginas > 0) {
+      this.paginaActual = this.totalPaginas - 1;
+    }
   }
 
   actualizarPaginaActual(): void {
@@ -201,88 +216,24 @@ export class CartaPresentacionComponent implements OnInit {
     }
   }
 
-  paginaAnterior(): void {
-    this.irAPagina(this.paginaActual - 1);
-  }
-
-  paginaSiguiente(): void {
-    this.irAPagina(this.paginaActual + 1);
-  }
-
-  getPaginas(): number[] {
-    const paginas: number[] = [];
-    const inicio = Math.max(1, this.paginaActual - 1);
-    const fin = Math.min(this.totalPaginas, this.paginaActual + 3);
-    
-    for (let i = inicio; i <= fin; i++) {
-      paginas.push(i);
-    }
-    return paginas;
-  }
-
-  // Métodos de utilidad
-  formatNumber(num: number): string {
-    return String(num).padStart(2, '0');
-  }
-
-  // Métodos de acciones
-  solicitarCarta(): void {
+  abrirModal(): void {
     this.mostrarModal = true;
   }
 
-  // Métodos del modal
   cerrarModal(): void {
     this.mostrarModal = false;
-    this.limpiarFormulario();
   }
 
-  // Manejar el scroll del modal
-  private scrollTimeout: any;
-  
-  onModalScroll(event: Event): void {
-    const element = event.target as HTMLElement;
-    element.classList.add('scrolling');
-    
-    // Limpiar timeout previo
-    if (this.scrollTimeout) {
-      clearTimeout(this.scrollTimeout);
-    }
-    
-    // Ocultar scrollbar después de 1 segundo de inactividad
-    this.scrollTimeout = setTimeout(() => {
-      element.classList.remove('scrolling');
-    }, 1000);
-  }
-
-  enviarSolicitud(): void {
-    console.log('Enviando solicitud:', this.solicitud);
-    // Aquí iría la lógica para enviar la solicitud
+  onCartaCreada(): void {
     this.cerrarModal();
+    this.cargarCartas();
+    this.toastExito = true;
+    setTimeout(() => {
+      this.toastExito = false;
+    }, 2000);
   }
 
-  limpiarFormulario(): void {
-    this.solicitud = {
-      empresa: '',
-      nuevaEmpresa: '',
-      gradoAcademico: '',
-      cargoResponsable: '',
-      representanteLegal: '',
-      procedenciaEmpresa: '',
-      horas: '',
-      contacto: ''
-    };
-  }
-
-  actualizar(): void {
-    this.refrescarDatos();
-  }
-
-  cambiarTab(tab: 'solicitudes' | 'cartas'): void {
-    this.tabActiva = tab;
-  }
-
-  ordenarTabla(): void {
-    this.cartasFiltradas.sort((a, b) => a.nombreEmpresa.localeCompare(b.nombreEmpresa));
-    this.actualizarPaginaActual();
+  reintentar(): void {
+    this.cargarDatosIniciales();
   }
 }

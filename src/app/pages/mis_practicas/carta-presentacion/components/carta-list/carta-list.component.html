@@ -1,0 +1,213 @@
+<div class="table-content">
+    <div class="table-header">
+        <div class="table-title-section">
+            <h3 class="table-title">
+                <ion-icon name="reader-outline"></ion-icon>
+                Cartas de Recomendación
+            </h3>
+        </div>
+
+        <div class="table-controls">
+            <!-- Filtro Estado -->
+            <div class="estado-pill">
+                <span class="estado-label">Estado:</span>
+
+                <div class="custom-dropdown" (click)="toggleDropdown()">
+                    <span class="dropdown-value">{{ getEstadoNombre() }}</span>
+                    <ion-icon name="chevron-down-outline"></ion-icon>
+
+                    <div class="dropdown-menu" *ngIf="dropdownOpen">
+                        <div class="dropdown-item" (click)="seleccionarEstado(null); $event.stopPropagation()">
+                            Todos
+                        </div>
+                        <div class="dropdown-item" *ngFor="let estado of estadosDisponibles"
+                            (click)="seleccionarEstado(estado.id); $event.stopPropagation()">
+                            {{ estado.nombre }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Botón AZ -->
+            <button class="btn-sort" (click)="onOrdenar()" title="Ordenar A-Z">
+                <ion-icon name="caret-up-outline"></ion-icon>
+                <span>AZ</span>
+                <ion-icon name="caret-down-outline"></ion-icon>
+            </button>
+
+            <!-- Buscador -->
+            <div class="search-control">
+                <ion-icon name="search-outline"></ion-icon>
+                <input type="text" placeholder="Buscar código" [(ngModel)]="textoBusqueda"
+                    (ngModelChange)="onBuscar()" />
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== TABLA ==================== -->
+    <div class="table-wrapper">
+        <!-- Loading -->
+        <div *ngIf="loading" class="loading-indicator">
+            <ion-icon name="refresh-outline" class="spinning"></ion-icon>
+            <span>Cargando cartas...</span>
+        </div>
+
+        <!-- Tabla -->
+        <table class="data-table" *ngIf="!loading && cartas.length > 0">
+            <thead>
+                <tr>
+                    <th>N°</th>
+                    <th>Nombre de Empresa</th>
+                    <th>Representante Legal</th>
+                    <th>Contacto</th>
+                    <th>Estado</th>
+                    <th>Detalle</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let carta of cartas; let i = index">
+                    <td class="numero">
+                        {{ formatNumber((paginaActual * itemsPorPagina) + i + 1) }}
+                    </td>
+                    <td class="empresa-name">{{ carta.nombre_empresa }}</td>
+                    <td class="representante-cell">
+                        {{ carta.representante_legal || 'N/A' }}
+                    </td>
+                    <td class="contacto-cell">
+                        {{ carta.contacto || 'N/A' }}
+                    </td>
+                    <td class="estado-cell">
+                        <span class="status-badge" [ngClass]="'status-' + getEstadoClase(carta.estado)">
+                            {{ carta.estado_nombre }}
+                        </span>
+                    </td>
+                    <td class="actions-cell">
+                        <button class="action-btn"
+                            [ngClass]="{ 'action-disabled': getEstadoClase(carta.estado) === 'revision' }"
+                            title="Ver detalle" (click)="onVerDetalle(carta.id_formato, carta)">
+                            <ion-icon name="eye-outline"></ion-icon>
+                            Ver
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Sin datos -->
+        <div *ngIf="!loading && cartas.length === 0" class="no-data-message">
+            <ion-icon name="document-outline"></ion-icon>
+            <span>No se encontraron cartas</span>
+            <small *ngIf="textoBusqueda || filtroEstado !== null">
+                Intenta ajustar los filtros de búsqueda
+            </small>
+        </div>
+    </div>
+
+    <!-- ==================== PAGINACIÓN ==================== -->
+    <div class="pagination">
+        <div class="pagination-left">
+            <span>Filas</span>
+            <select [(ngModel)]="itemsPorPagina" (change)="onItemsPorPaginaChange()" class="rows-select">
+                <option [value]="5">5</option>
+                <option [value]="10">10</option>
+                <option [value]="25">25</option>
+                <option [value]="50">50</option>
+            </select>
+        </div>
+
+        <div class="pagination-controls">
+            <button class="page-btn" [disabled]="paginaActual === 0" (click)="irAPagina(0)">
+                <ion-icon name="chevron-back-outline"></ion-icon>
+                <ion-icon name="chevron-back-outline"></ion-icon>
+            </button>
+
+            <button class="page-btn" [disabled]="paginaActual === 0" (click)="paginaAnterior()">
+                <ion-icon name="chevron-back-outline"></ion-icon>
+            </button>
+
+            <div class="page-numbers">
+                <button *ngFor="let pagina of getPaginas()" class="page-number"
+                    [class.active]="pagina === paginaActual + 1" (click)="irAPagina(pagina - 1)">
+                    {{ pagina }}
+                </button>
+                <span *ngIf="totalPaginas > 5" class="page-ellipsis">...</span>
+                <button *ngIf="totalPaginas > 5" class="page-number" (click)="irAPagina(totalPaginas - 1)">
+                    {{ totalPaginas }}
+                </button>
+            </div>
+
+            <button class="page-btn" [disabled]="paginaActual === totalPaginas - 1" (click)="paginaSiguiente()">
+                <ion-icon name="chevron-forward-outline"></ion-icon>
+            </button>
+
+            <button class="page-btn" [disabled]="paginaActual === totalPaginas - 1"
+                (click)="irAPagina(totalPaginas - 1)">
+                <ion-icon name="chevron-forward-outline"></ion-icon>
+                <ion-icon name="chevron-forward-outline"></ion-icon>
+            </button>
+        </div>
+
+        <span class="pagination-info">
+            {{ (paginaActual * itemsPorPagina) + 1 }}
+            al
+            {{ Math.min((paginaActual + 1) * itemsPorPagina, cartasFiltradas.length) }}
+            de
+            {{ cartasFiltradas.length }}
+            solicitudes
+        </span>
+    </div>
+</div>
+
+<!-- ============ MODAL DETALLE CARTA (HIJO) ============ -->
+<div class="modal-overlay" *ngIf="modalAbierto">
+    <div class="modal-card">
+        <!-- Header -->
+        <div class="modal-header">
+            <div class="modal-title">
+                <ion-icon name="clipboard-outline"></ion-icon>
+                <span>Detalle</span>
+            </div>
+            <button class="modal-close" (click)="cerrarModalDetalle()">
+                <ion-icon name="close-outline"></ion-icon>
+            </button>
+        </div>
+
+        <!-- Contenido RECHAZADO -->
+        <div class="modal-body" *ngIf="modalTipo === 'rechazado'">
+            <p class="modal-note-title">Nota:</p>
+            <p class="modal-note-text">
+                Tu carta de presentación ha sido rechazada, por favor verifica los datos enviados. Gracias.
+            </p>
+
+            <div class="modal-actions-center">
+                <button class="btn-nueva-solicitud" (click)="redirigirANuevaSolicitud()">
+                    <ion-icon name="create-outline"></ion-icon>
+                    <span>Nueva Solicitud</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Contenido ACEPTADO -->
+        <div class="modal-body" *ngIf="modalTipo === 'aceptado'">
+            <p class="modal-note-title">Nota:</p>
+            <p class="modal-note-text">
+                Tu carta de presentación ha sido aceptada y ya está creada. Puedes descargarla haciendo clic aquí:
+            </p>
+
+            <div class="modal-files-title">Archivos</div>
+
+            <div class="file-row">
+                <div class="file-main">
+                    <ion-icon name="eye"></ion-icon>
+                    <span class="file-name">
+                        <!-- Solo simulamos nombre, puedes cambiarlo luego -->
+                        Carta_P_JuanPerez.pdf
+                    </span>
+                </div>
+                <button class="file-download-btn">
+                    <ion-icon name="download-outline"></ion-icon>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

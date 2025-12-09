@@ -1,0 +1,812 @@
+.table-content {
+    background: transparent;
+    border-radius: 8px;
+    box-shadow: none;
+    margin-top: 16px;
+}
+
+.table-header {
+    padding: 12px 20px;
+    border-bottom: 1px solid #E4E9F2;
+    display: flex;
+    justify-content: space-between;
+    border: 1px solid #CFD8ED;
+    align-items: center;
+    background: #F0F7FF;
+    border-radius: 8px 8px 0 0;
+}
+
+.table-title-section {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.table-title {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 700;
+    color: #276CA1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.table-title ion-icon {
+    color: #276CA1;
+    font-size: 20px;
+    filter: drop-shadow(0 0 0.3px #276CA1);
+    -webkit-text-stroke: 0.5px #276CA1;
+}
+
+.table-controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.estado-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    background: #D1EBFF;
+    border-radius: 999px;
+    height: 32px;
+}
+
+.estado-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #276CA1;
+    line-height: 1;
+}
+
+.select-wrapper-estado {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.small-select {
+    border: none;
+    background: transparent;
+    padding: 0 22px 0 4px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #276CA1;
+    line-height: 1;
+    appearance: none;
+    cursor: pointer;
+    height: 20px;
+}
+
+.small-select:focus {
+    outline: none;
+}
+
+.select-icon-estado {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 14px;
+    color: #276CA1;
+    pointer-events: none;
+}
+
+.small-select option {
+    background: #ffffff;
+    color: #222B45;
+    padding: 8px 12px;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.small-select option:hover {
+    background: #F0F7FF;
+}
+
+.small-select option:checked {
+    background: #D1EBFF;
+    color: #276CA1;
+    font-weight: 600;
+}
+
+.custom-dropdown {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+}
+
+.dropdown-value {
+    font-size: 13px;
+    font-weight: 600;
+    color: #276CA1;
+}
+
+.custom-dropdown ion-icon {
+    font-size: 14px;
+    color: #276CA1;
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: -14px;
+    margin-top: 8px;
+    background: #ffffff;
+    border: 1px solid #E4E9F2;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    min-width: 150px;
+}
+
+.dropdown-item {
+    padding: 10px 16px;
+    font-size: 13px;
+    color: #222B45;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.dropdown-item:first-child {
+    border-radius: 8px 8px 0 0;
+}
+
+.dropdown-item:last-child {
+    border-radius: 0 0 8px 8px;
+}
+
+.dropdown-item:hover {
+    background: #F0F7FF;
+    color: #276CA1;
+}
+
+.btn-sort {
+    background: transparent;
+    color: #276CA1;
+    border: none;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    line-height: 1;
+}
+
+.btn-sort span {
+    font-size: 14px;
+    font-weight: 600;
+    color: #276CA1;
+}
+
+.btn-sort ion-icon {
+    font-size: 8px;
+    color: #276CA1;
+}
+
+.btn-sort:hover {
+    background: rgba(39, 108, 161, 0.1);
+}
+
+.search-control {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.search-control ion-icon {
+    position: absolute;
+    left: 12px;
+    color: #8F9BB3;
+    font-size: 16px;
+    z-index: 1;
+}
+
+.search-control input {
+    padding: 8px 14px 8px 36px;
+    border: none;
+    border-radius: 15px;
+    font-size: 13px;
+    width: 220px;
+    color: #8F9BB3;
+    background: #FFFFFF;
+    font-weight: 400;
+}
+
+.search-control input::placeholder {
+    color: #8F9BB3;
+}
+
+.search-control input:focus {
+    outline: none;
+    border-color: #276CA1;
+}
+
+.table-wrapper {
+    border: 1px solid #E4E9F2;
+    border-top: none;
+    overflow: hidden;
+}
+
+.loading-indicator {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    padding: 80px 20px;
+    color: #276CA1;
+}
+
+.loading-indicator ion-icon {
+    font-size: 48px;
+    color: #276CA1;
+}
+
+.loading-indicator span {
+    font-size: 14px;
+    font-weight: 500;
+    color: #276CA1;
+}
+
+.spinning {
+    animation: spin 1.2s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 13px;
+    table-layout: fixed;
+}
+
+.data-table th {
+    background: #FAFBFD;
+    padding: 14px 16px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #000000;
+    border-bottom: 2px solid #E4E9F2;
+    text-transform: capitalize;
+}
+
+.data-table th:nth-child(1) {
+    text-align: center;
+    width: 3%;
+    padding: 14px 4px;
+    border-right: 1px solid #E4E9F2;
+}
+
+.data-table th:nth-child(2) {
+    text-align: left;
+    width: 30%;
+    border-right: 1px solid #E4E9F2;
+}
+
+.data-table th:nth-child(3) {
+    text-align: center;
+    width: 25%;
+    border-right: 1px solid #E4E9F2;
+}
+
+.data-table th:nth-child(4) {
+    text-align: center;
+    width: 12%;
+    border-right: 1px solid #E4E9F2;
+}
+
+.data-table th:nth-child(5) {
+    text-align: center;
+    width: 12%;
+    border-right: 1px solid #E4E9F2;
+}
+
+.data-table th:nth-child(6) {
+    text-align: center;
+    width: 10%;
+}
+
+.data-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid #E4E9F2;
+    font-size: 13px;
+    color: #000000;
+    font-weight: 600;
+    background: #ffffff;
+}
+
+.data-table td:nth-child(1) {
+    text-align: center;
+    padding: 12px 4px;
+    border-right: 1px solid #E4E9F2;
+}
+
+.data-table td:nth-child(2) {
+    text-align: left;
+    font-style: normal;
+    border-right: 1px solid #E4E9F2;
+}
+
+.data-table td:nth-child(3) {
+    text-align: center;
+    border-right: 1px solid #E4E9F2;
+}
+
+.data-table td:nth-child(4) {
+    text-align: center;
+    border-right: 1px solid #E4E9F2;
+}
+
+.data-table td:nth-child(5) {
+    text-align: center;
+    border-right: 1px solid #E4E9F2;
+}
+
+.data-table td:nth-child(6) {
+    text-align: center;
+}
+
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 22px;
+    padding: 0 12px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1;
+}
+
+.status-aprobado {
+    background: #B4F6D9;
+    color: #16793C;
+}
+
+.status-revision {
+    background: #C0E3FF;
+    color: #276CA1;
+}
+
+.status-rechazado {
+    background: #FFDFDF;
+    color: #DB0000;
+}
+
+.action-btn {
+    background: #FFECC7;
+    color: #F8A900;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    transition: background 0.2s ease;
+}
+
+.action-btn ion-icon {
+    font-size: 14px;
+    color: #F8A900;
+}
+
+.action-btn:hover {
+    background: #FFE0A3;
+}
+
+.action-btn.action-disabled {
+    background: #E4E9F2;
+    color: #8F9BB3;
+    cursor: default;
+}
+
+.action-btn.action-disabled ion-icon {
+    color: #8F9BB3;
+}
+
+.action-btn.action-disabled:hover {
+    background: #E4E9F2;
+}
+
+.no-data-message {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+    color: #999;
+    text-align: center;
+}
+
+.no-data-message ion-icon {
+    font-size: 48px;
+    margin-bottom: 12px;
+    color: #ccc;
+}
+
+.no-data-message span {
+    font-size: 16px;
+    margin-bottom: 8px;
+}
+
+.no-data-message small {
+    font-size: 13px;
+    color: #bbb;
+}
+
+.pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    border-top: none;
+    background: transparent;
+    border-radius: 0;
+    margin-top: 12px;
+}
+
+.pagination-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: #003264;
+    font-weight: 600;
+}
+
+.rows-select {
+    padding: 4px 8px;
+    border: 1px solid #E4E9F2;
+    border-radius: 4px;
+    font-size: 13px;
+    background: #F7F9FC;
+    color: #222B45;
+    cursor: pointer;
+}
+
+.pagination-controls {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.page-btn {
+    background: #ffffff;
+    border: 2px solid #CFD8ED;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.page-btn ion-icon {
+    font-size: 16px;
+    color: #003264;
+}
+
+.page-btn:hover:not(:disabled) {
+    background: #F0F7FF;
+    border-color: #003264;
+}
+
+.page-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.page-btn:disabled ion-icon {
+    color: #8F9BB3;
+}
+
+.page-numbers {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0 8px;
+}
+
+.page-number {
+    background: #ffffff;
+    border: 2px solid #CFD8ED;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #003264;
+    transition: all 0.2s ease;
+}
+
+.page-number:hover {
+    background: #F0F7FF;
+    border-color: #003264;
+}
+
+.page-number.active {
+    background: #08C1B8;
+    color: #ffffff;
+    border: 2px solid #08C1B8;
+}
+
+.page-number.active:hover {
+    background: #07ABA3;
+    border-color: #07ABA3;
+}
+
+.page-ellipsis {
+    padding: 0 4px;
+    color: #8F9BB3;
+    font-size: 13px;
+}
+
+.pagination-info {
+    font-size: 13px;
+    color: #003264;
+    font-weight: 600;
+}
+
+@media (max-width: 768px) {
+    .table-header {
+        flex-direction: column;
+        gap: 12px;
+        align-items: flex-start;
+    }
+
+    .table-controls {
+        flex-wrap: wrap;
+        width: 100%;
+    }
+
+    .data-table {
+        font-size: 12px;
+    }
+
+    .data-table th,
+    .data-table td {
+        padding: 8px;
+    }
+
+    .pagination {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .pagination-controls {
+        order: -1;
+    }
+}
+
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1100;
+    animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        backdrop-filter: blur(0px);
+        -webkit-backdrop-filter: blur(0px);
+    }
+
+    to {
+        opacity: 1;
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+    }
+}
+
+@keyframes modalAppear {
+    from {
+        opacity: 0;
+        transform: scale(0.96);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.modal-card {
+    position: relative;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+    width: 90%;
+    max-width: 560px;
+    animation: modalAppear 0.25s ease-out;
+    overflow: hidden;
+}
+
+.modal-header {
+    background: #003264;
+    color: #ffffff;
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.modal-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.modal-title ion-icon {
+    font-size: 20px;
+}
+
+.modal-close {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-close ion-icon {
+    font-size: 20px;
+    color: #ffffff;
+}
+
+.modal-body {
+    padding: 30px 40px 34px;
+    background: #ffffff;
+}
+
+.modal-note-title,
+.modal-files-title {
+    margin: 0 0 4px;
+    font-size: 15px;
+    font-weight: 700;
+    color: #8F9BB3;
+}
+
+.modal-note-text {
+    margin: 0 0 24px;
+    font-size: 15px;
+    color: #8F9BB3;
+    line-height: 1.7;
+}
+
+.modal-actions-center {
+    display: flex;
+    justify-content: center;
+}
+
+.btn-nueva-solicitud {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 34px;
+    border-radius: 999px;
+    border: none;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 600;
+    background: #D1F1F0;
+    color: #08C1B8;
+    box-shadow: none;
+    transition: background 0.15s ease;
+}
+
+.btn-nueva-solicitud ion-icon {
+    font-size: 18px;
+    color: #08C1B8;
+}
+
+.btn-nueva-solicitud:hover {
+    background: #c1eae8;
+}
+
+.modal-files-title {
+    margin-top: 4px;
+    margin-bottom: 10px;
+}
+
+.file-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.file-main {
+    flex: 0 0 75%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: #EAF8FF;
+    border-radius: 10px;
+    padding: 10px 18px;
+}
+
+.file-main ion-icon {
+    font-size: 20px;
+    color: #276CA1;
+}
+
+.file-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: #276CA1;
+}
+
+.file-download-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: none;
+    background: #FFB300;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.18);
+    transition: background 0.15s ease;
+}
+
+.file-download-btn ion-icon {
+    font-size: 22px;
+    color: #ffffff;
+}
+
+.file-download-btn:hover {
+    background: #FFA000;
+}
+
+@media (max-width: 480px) {
+    .modal-card {
+        max-width: 95%;
+    }
+
+    .modal-body {
+        padding: 22px 18px 24px;
+    }
+}

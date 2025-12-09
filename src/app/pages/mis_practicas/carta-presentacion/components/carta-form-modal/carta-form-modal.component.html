@@ -1,0 +1,179 @@
+<div class="modal-overlay" (click)="onOverlayClick($event)">
+    <div class="modal-container" (click)="$event.stopPropagation()">
+
+        <div class="modal-header">
+            <ion-icon name="add-outline" class="header-icon"></ion-icon>
+            <h2>Solicitud de Carta de Presentación</h2>
+        </div>
+
+        <div class="modal-main" [class.blur]="mostrarConfirmacionCancelar">
+
+            <div class="modal-body" (scroll)="onModalScroll($event)">
+                <form>
+
+                    <div class="form-group">
+                        <label>Empresa</label>
+                        <select [(ngModel)]="solicitud.idEmpresa" name="empresa" [class.error]="errores.empresa"
+                            (ngModelChange)="limpiarError('empresa')" class="form-control"
+                            [disabled]="cargandoEmpresas">
+                            <option [ngValue]="null">
+                                {{ cargandoEmpresas ? 'Cargando empresas...' : 'Selecciona empresa' }}
+                            </option>
+                            <option *ngFor="let empresa of empresas" [ngValue]="empresa.id_empresa">
+                                {{ empresa.nombre_empresa }}
+                            </option>
+                        </select>
+                        <small class="error-text" *ngIf="errores.empresa">{{ errores.empresa }}</small>
+                    </div>
+
+                    <div class="form-group" *ngIf="!solicitud.idEmpresa">
+                        <label>Nueva empresa <span class="required">*</span></label>
+                        <input type="text" [(ngModel)]="solicitud.nuevaEmpresa" name="nuevaEmpresa"
+                            [class.error]="errores.empresa" (ngModelChange)="limpiarError('empresa')"
+                            placeholder="Escribe empresa" class="form-control">
+                        <small class="error-text" *ngIf="errores.empresa">{{ errores.empresa }}</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Grado Académico de Responsable <span class="required">*</span></label>
+                        <input type="text" [(ngModel)]="solicitud.gradoAcademico" name="gradoAcademico"
+                            [class.error]="errores.gradoAcademico" (ngModelChange)="limpiarError('gradoAcademico')"
+                            placeholder="Ingresar grado académico" class="form-control">
+                        <small class="error-text" *ngIf="errores.gradoAcademico">{{ errores.gradoAcademico }}</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Cargo del Responsable</label>
+                        <input type="text" [(ngModel)]="solicitud.cargoResponsable" name="cargoResponsable"
+                            placeholder="Ingresar cargo de responsable dentro de establecimiento" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Representante Legal <span class="required">*</span></label>
+                        <input type="text" [(ngModel)]="solicitud.representanteLegal" name="representanteLegal"
+                            [class.error]="errores.representanteLegal"
+                            (ngModelChange)="limpiarError('representanteLegal')"
+                            placeholder="Ingresar nombre de representante" class="form-control">
+                        <small class="error-text" *ngIf="errores.representanteLegal">
+                            {{ errores.representanteLegal }}
+                        </small>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Procedencia de Empresa</label>
+                        <input type="text" [(ngModel)]="solicitud.procedenciaEmpresa" name="procedenciaEmpresa"
+                            placeholder="Ingresar Procedencia" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Horas <span class="required">*</span></label>
+                        <input type="number" [(ngModel)]="solicitud.horas" name="horas" [class.error]="errores.horas"
+                            (input)="limpiarError('horas')" placeholder="Horas por cumplir"
+                            class="form-control no-spinners" min="1">
+                        <small class="error-text" *ngIf="errores.horas">{{ errores.horas }}</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Contacto</label>
+                        <input type="text" [(ngModel)]="solicitud.contacto" name="contacto"
+                            placeholder="Ingresar número de contacto" class="form-control"
+                            (keydown)="validarContacto($event)" maxlength="15">
+                    </div>
+
+                    <div class="form-row" *ngIf="esPsicologia">
+                        <div class="form-group">
+                            <label>Fecha Inicio <span class="required">*</span></label>
+                            <input type="date" [(ngModel)]="solicitud.fechaInicio" name="fechaInicio"
+                                [class.error]="errores.fechaInicio" (ngModelChange)="onFechaInicioChange()"
+                                class="form-control">
+                            <small class="error-text" *ngIf="errores.fechaInicio">{{ errores.fechaInicio }}</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Fecha Fin <span class="required">*</span></label>
+                            <input type="date" [(ngModel)]="solicitud.fechaFin" name="fechaFin"
+                                [class.error]="errores.fechaFin" (ngModelChange)="onFechaFinChange()"
+                                [min]="solicitud.fechaInicio" class="form-control">
+                            <small class="error-text" *ngIf="errores.fechaFin">{{ errores.fechaFin }}</small>
+                        </div>
+                    </div>
+
+                    <div *ngIf="esPsicologia" class="form-group">
+                        <label>Evaluación CAPSI <span class="required">*</span></label>
+
+                        <div class="capsi-row">
+                            <button type="button" class="capsi-upload" (click)="fileInput.click()">
+                                <ion-icon name="attach-outline"></ion-icon>
+                                <span>Adjuntar archivo</span>
+                                <ion-icon name="add"></ion-icon>
+                            </button>
+
+                            <button type="button" class="capsi-file" *ngIf="nombreArchivoCapsi"
+                                (click)="verVistaPrevia()">
+                                <ion-icon name="eye"></ion-icon>
+                                <span class="file-name">{{ nombreArchivoCapsi }}</span>
+                            </button>
+
+                            <button type="button" class="capsi-delete" *ngIf="nombreArchivoCapsi"
+                                (click)="eliminarArchivo()">
+                                <ion-icon name="close-outline"></ion-icon>
+                            </button>
+                        </div>
+
+                        <input type="file" #fileInput (change)="onArchivoSeleccionado($event)" accept=".pdf,image/*"
+                            style="display: none;">
+
+                        <small class="error-text" *ngIf="errores.evaluacionCapsi">
+                            {{ errores.evaluacionCapsi }}
+                        </small>
+                    </div>
+
+                    <div class="preview-modal" *ngIf="mostrarVistaPrevia" (click)="cerrarVistaPrevia()">
+                        <div class="preview-content" (click)="$event.stopPropagation()">
+                            <div class="preview-header">
+                                <h3>Vista Previa</h3>
+                                <button class="btn-close-preview" (click)="cerrarVistaPrevia()">
+                                    <ion-icon name="close-outline"></ion-icon>
+                                </button>
+                            </div>
+                            <div class="preview-body">
+                                <iframe *ngIf="urlVistaPrevia" [src]="urlVistaPrevia" frameborder="0"></iframe>
+                            </div>
+                            <div class="preview-footer">
+                                <button class="btn-aceptar-preview" (click)="cerrarVistaPrevia()">ACEPTAR</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn-cancelar" (click)="solicitarCancelar()" [disabled]="enviando">
+                    <ion-icon name="close"></ion-icon>
+                    Cancelar
+                </button>
+                <button type="button" class="btn-enviar" (click)="enviarSolicitud()" [disabled]="enviando">
+                    <ion-icon name="checkmark"></ion-icon>
+                    {{ enviando ? 'Enviando...' : 'Enviar' }}
+                </button>
+            </div>
+
+        </div>
+
+        <div *ngIf="mostrarConfirmacionCancelar" class="confirmation-inside">
+            <div class="confirmation-content">
+                <div class="confirmation-icon warning">
+                    <ion-icon name="alert-circle-outline"></ion-icon>
+                </div>
+                <h3>¿Estás seguro?</h3>
+                <p>Los datos ingresados se perderán si cancelas ahora</p>
+                <div class="confirmation-buttons">
+                    <button class="btn-no" (click)="cancelarConfirmacion()">No, continuar</button>
+                    <button class="btn-yes" (click)="confirmarCancelar()">Sí, cancelar</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

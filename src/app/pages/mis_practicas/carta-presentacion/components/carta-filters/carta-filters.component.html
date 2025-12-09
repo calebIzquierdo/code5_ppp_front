@@ -1,0 +1,31 @@
+<div class="filters-container">
+    <div class="filter-item">
+        <label>Campus</label>
+        <div class="select-wrapper">
+            <select [(ngModel)]="filtroCampus" class="form-select" disabled>
+                <option *ngFor="let campus of filtrosDisponibles.campus" [ngValue]="campus.id_campus">
+                    {{ campus.nombre }}
+                </option>
+            </select>
+            <ion-icon name="chevron-down-outline" class="select-icon"></ion-icon>
+        </div>
+    </div>
+    <div class="filter-item">
+        <label>Escuela Profesional</label>
+        <div class="select-wrapper">
+            <select [(ngModel)]="filtroEscuela" class="form-select" disabled>
+                <option *ngFor="let programa of filtrosDisponibles.programas" [ngValue]="programa.id_programa_estudio">
+                    {{ programa.nombre }}
+                </option>
+            </select>
+            <ion-icon name="chevron-down-outline" class="select-icon"></ion-icon>
+        </div>
+    </div>
+    <div class="button-item">
+        <label>Filtro de búsqueda</label>
+        <button class="btn-apply" (click)="aplicarFiltros()">
+            <ion-icon name="funnel-outline"></ion-icon>
+            Aplicar búsqueda
+        </button>
+    </div>
+</div>

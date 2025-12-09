@@ -1,132 +1,157 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
-import { environment } from '../../../../environments/environment';
-
-export interface CartaSolicitud {
-  id_formato: number;
-  id_alumno: number;
-  id_trabajador: number;
-  fecha_emision: string;
-  estado: string;
-  nombre_empresa: string;
-  grado_academico: string;
-  cargo_responsable: string;
-  representante_legal: string;
-  procedencia_empresa: string;
-  contacto: string;
-  horas: string;
-  fecha_inicio: string;
-  fecha_fin: string;
-  evaluacion_capsi: string;
-  id_config: number;
-}
-
-export interface ApiResponse<T> {
-  success: boolean;
-  message: string;
-  data: T;
-}
+import { map, catchError } from 'rxjs/operators';
+import {
+  CartaPresentacion,
+  FiltrosDisponibles,
+  CartaFormData,
+  ApiResponse,
+  AlumnoDefaults,
+  AlumnoInfo,
+  Empresa
+} from '../../interfaces/carta-presentacion/carta-presentacion.interface';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CartaPresentacionService {
-  private readonly apiUrl = environment.apiUrl.config;
-  
-  private httpOptions = {
-    headers: new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Accept': 'application/json'
-    })
-  };
+  private readonly baseUrl = '/api/ppp/carta-presentacion';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
-  /**
-   * Obtiene todas las cartas de solicitud desde la API
-   * @returns Observable<CartaSolicitud[]>
-   */
-  getCartasSolicitud(): Observable<CartaSolicitud[]> {
-    const url = `${this.apiUrl}/api/request-letters/`;
-    
-    return this.http.get<ApiResponse<CartaSolicitud[]>>(url, this.httpOptions)
+  getAlumnoInfo(idAlumno: number): Observable<AlumnoInfo> {
+    return this.http.get<ApiResponse<AlumnoInfo>>(`${this.baseUrl}/alumno/${idAlumno}/info`)
       .pipe(
-        map(response => {
-          if (response.success && response.data) {
-            return response.data;
-          } else {
-            throw new Error(response.message || 'Error al obtener las cartas de solicitud');
-          }
-        }),
+        map(response => response.data),
         catchError(this.handleError)
       );
   }
 
-  /**
-   * Filtra cartas por término de búsqueda
-   * @param searchTerm - Término de búsqueda
-   * @param cartas - Lista de cartas
-   * @returns CartaSolicitud[]
-   */
-  filterCartas(searchTerm: string, cartas: CartaSolicitud[]): CartaSolicitud[] {
-    if (!searchTerm.trim()) {
-      return cartas;
-    }
-    
-    const term = searchTerm.toLowerCase().trim();
-    return cartas.filter(carta => 
-      carta.nombre_empresa.toLowerCase().includes(term) ||
-      carta.representante_legal.toLowerCase().includes(term) ||
-      carta.contacto.includes(term) ||
-      carta.id_formato.toString().includes(term)
-    );
+  getAlumnoDefaults(idAlumno: number): Observable<AlumnoDefaults> {
+    return this.http.get<ApiResponse<AlumnoDefaults>>(`${this.baseUrl}/alumno/${idAlumno}/defaults`)
+      .pipe(
+        map(response => response.data),
+        catchError(this.handleError)
+      );
   }
 
-  /**
-   * Mapea el estado numérico a texto
-   * @param estado - Estado numérico de la API
-   * @returns string
-   */
-  mapearEstado(estado: string): 'Aprobado' | 'Revisión' | 'Rechazado' {
-    switch (estado) {
-      case '1':
-        return 'Aprobado';
-      case '0':
-        return 'Rechazado';
-      case '2':
-        return 'Revisión';
-      default:
-        return 'Revisión';
-    }
+  getFiltros(idAlumno: number): Observable<FiltrosDisponibles> {
+    return this.http.get<ApiResponse<FiltrosDisponibles>>(`${this.baseUrl}/filtros/${idAlumno}`)
+      .pipe(
+        map(response => response.data),
+        catchError(this.handleError)
+      );
   }
 
-  /**
-   * Manejo de errores HTTP
-   * @param error - Error HTTP
-   * @returns Observable<never>
-   */
-  private handleError(error: any): Observable<never> {
-    console.error('Error en CartaPresentacionService:', error);
-    
-    let errorMessage = 'Error desconocido';
+  getCartas(idAlumno: number, filtros?: { estado?: number; id_campus?: number; id_programa_estudio?: number }): Observable<CartaPresentacion[]> {
+    let params = new HttpParams().set('id_alumno', idAlumno.toString());
+
+    if (filtros) {
+      if (filtros.estado !== undefined) params = params.set('estado', filtros.estado.toString());
+      if (filtros.id_campus) params = params.set('id_campus', filtros.id_campus.toString());
+      if (filtros.id_programa_estudio) params = params.set('id_programa_estudio', filtros.id_programa_estudio.toString());
+    }
+
+    return this.http.get<ApiResponse<CartaPresentacion[]>>(this.baseUrl, { params })
+      .pipe(
+        map(response => response.data),
+        catchError(this.handleError)
+      );
+  }
+
+  getCarta(id: number): Observable<CartaPresentacion> {
+    return this.http.get<ApiResponse<CartaPresentacion>>(`${this.baseUrl}/${id}`)
+      .pipe(
+        map(response => response.data),
+        catchError(this.handleError)
+      );
+  }
+
+  createCarta(carta: CartaFormData): Observable<CartaPresentacion> {
+    return this.http.post<ApiResponse<CartaPresentacion>>(this.baseUrl, carta)
+      .pipe(
+        map(response => response.data),
+        catchError(this.handleError)
+      );
+  }
+
+  updateCarta(id: number, carta: Partial<CartaFormData>): Observable<CartaPresentacion> {
+    return this.http.put<ApiResponse<CartaPresentacion>>(`${this.baseUrl}/${id}`, carta)
+      .pipe(
+        map(response => response.data),
+        catchError(this.handleError)
+      );
+  }
+
+  deleteCarta(id: number): Observable<void> {
+    return this.http.delete<ApiResponse<void>>(`${this.baseUrl}/${id}`)
+      .pipe(
+        map(() => undefined),
+        catchError(this.handleError)
+      );
+  }
+
+  getEmpresas(): Observable<Empresa[]> {
+    return this.http.get<ApiResponse<Empresa[]>>(`${this.baseUrl}/empresas`)
+      .pipe(
+        map(response => response.data),
+        catchError(this.handleError)
+      );
+  }
+
+  mapearEstadoNombre(estado: number): string {
+    const estados: Record<number, string> = {
+      0: 'Rechazado',
+      1: 'Aprobado',
+      2: 'Revisión'
+    };
+    return estados[estado] || 'Desconocido';
+  }
+
+  mapearEstadoClase(estado: number): string {
+    const clases: Record<number, string> = {
+      0: 'rechazado',
+      1: 'aprobado',
+      2: 'revision'
+    };
+    return clases[estado] || 'revision';
+  }
+
+  private handleError(error: HttpErrorResponse): Observable<never> {
+    let errorMessage = '';
+
     if (error.error instanceof ErrorEvent) {
-      // Error del lado del cliente
-      errorMessage = `Error: ${error.error.message}`;
+      errorMessage = `Error de conexión: ${error.error.message}`;
     } else {
-      // Error del lado del servidor
-      errorMessage = `Código de error: ${error.status}\nMensaje: ${error.message}`;
-      
-      if (error.status === 0) {
-        errorMessage = 'No se puede conectar al servidor. Verifique su conexión.';
-      } else if (error.status === 404) {
-        errorMessage = 'Endpoint no encontrado. Verifique la URL de la API.';
-      } else if (error.status >= 500) {
-        errorMessage = 'Error interno del servidor. Intente nuevamente más tarde.';
+      switch (error.status) {
+        case 0:
+          errorMessage = 'No se puede conectar con el servidor. Verifica tu conexión.';
+          break;
+        case 400:
+          errorMessage = 'Solicitud incorrecta. Verifica los datos enviados.';
+          break;
+        case 401:
+          errorMessage = 'No autorizado. Inicia sesión nuevamente.';
+          break;
+        case 403:
+          errorMessage = 'No tienes permisos para realizar esta acción.';
+          break;
+        case 404:
+          errorMessage = 'El recurso solicitado no fue encontrado.';
+          break;
+        case 500:
+          errorMessage = 'Problemas con el servidor. Intenta más tarde.';
+          break;
+        case 503:
+          errorMessage = 'Servicio no disponible. Intenta más tarde.';
+          break;
+        default:
+          errorMessage = `Error del servidor (${error.status}). Contacta al administrador.`;
       }
     }
-    
+
+    console.error('Error HTTP:', error);
     return throwError(() => new Error(errorMessage));
   }
 }

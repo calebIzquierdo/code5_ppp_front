@@ -1,0 +1,133 @@
+.filters-container {
+    background: transparent;
+    box-shadow: none;
+    border-radius: 0;
+    padding: 12px 28px 12px 12px;
+    margin-bottom: 0;
+    display: flex;
+    gap: 16px;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+.filter-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 0 0 270px;
+    max-width: 270px;
+}
+
+.filter-item label {
+    font-size: 14px;
+    font-weight: 700;
+    color: #8F9BB3;
+}
+
+.button-item label {
+    font-size: 11px;
+    font-weight: 700;
+    color: #8F9BB3;
+}
+
+.select-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.form-select {
+    width: 100%;
+    padding: 12px 40px 12px 12px;
+    border: 1px solid #E4E9F2;
+    border-radius: 6px;
+    font-size: 13px;
+    background-color: #F7F9FC;
+    color: #8F9BB3;
+    cursor: pointer;
+    appearance: none;
+}
+
+.form-select:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(0, 50, 100, 0.15);
+}
+
+.select-icon {
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 18px;
+    color: #8F9BB3;
+    pointer-events: none;
+}
+
+.button-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 0 0 auto;
+}
+
+.btn-apply {
+    background: #003264;
+    color: #ffffff;
+    border: none;
+    padding: 12px 56px;
+    border-radius: 999px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background 0.2s ease;
+}
+
+.btn-apply ion-icon {
+    font-size: 20px;
+    color: #ffffff;
+    transition: transform 0.3s ease;
+}
+
+.btn-apply:hover {
+    background: #002548;
+}
+
+.btn-apply:hover ion-icon {
+    transform: rotate(180deg);
+}
+
+@media (max-width: 1200px) {
+    .filters-container {
+        flex-wrap: wrap;
+        gap: 12px;
+        justify-content: flex-start;
+    }
+
+    .filter-item {
+        flex: 1 1 220px;
+    }
+
+    .button-item {
+        align-items: flex-start;
+    }
+}
+
+@media (max-width: 768px) {
+    .filters-container {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 0 16px 16px 16px;
+    }
+
+    .filter-item,
+    .button-item {
+        flex: 1 1 auto;
+    }
+
+    .btn-apply {
+        width: 100%;
+        justify-content: center;
+    }
+}
