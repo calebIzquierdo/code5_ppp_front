@@ -20,216 +20,458 @@
     </div>
   </div>
 
-  <!-- Filtros superiores -->
-  <div class="filters-container">
-    <!-- Primera fila: 3 elementos -->
-    <div class="filters-row-1">
-      <div class="filter-item">
-        <label>Campus</label>
-        <select [(ngModel)]="filtroCampus" class="form-select">
-          <option value="">UPEU Lima</option>
-          <option value="lima">Campus Lima</option>
-          <option value="arequipa">Campus Arequipa</option>
-        </select>
-      </div>
+  <!-- Contenido principal con renderizado condicional -->
+  <div class="main-content">
+    
+    <!-- Vista de lista de cartas (Vista por defecto) -->
+    @if (!cartaSeleccionada()) {
+      <div class="table-view fade-in">
+        <!-- Filtros superiores -->
+        <div class="filters-container">
+          <!-- Primera fila: 3 elementos -->
+          <div class="filters-row-1">
+            <div class="filter-item">
+              <label>Campus</label>
+              <select [(ngModel)]="filtroCampus" (ngModelChange)="onCampusChange()" class="form-select">
+                <option value="">Seleccionar campus</option>
+                <option *ngFor="let campus of campusDisponibles" [value]="campus.id_campus">{{campus.nombre}}</option>
+              </select>
+            </div>
 
-      <div class="filter-item">
-        <label>Facultad</label>
-        <select [(ngModel)]="filtroFacultad" class="form-select">
-          <option value="">Todos</option>
-          <option value="ingenieria">Facultad de Ingeniería</option>
-          <option value="salud">Facultad de Ciencias de la Salud</option>
-        </select>
-      </div>
+            <div class="filter-item">
+              <label>Facultad</label>
+              <select [(ngModel)]="filtroFacultad" (ngModelChange)="onFacultadChange()" class="form-select" [disabled]="!filtroCampus">
+                <option value="">{{filtroCampus ? 'Seleccionar facultad' : 'Primero selecciona un campus'}}</option>
+                <option *ngFor="let facultad of facultadesDisponibles" [value]="facultad.id_facultad">{{facultad.nombre}}</option>
+              </select>
+            </div>
 
-      <div class="filter-item">
-        <label>Escuela profesional</label>
-        <select [(ngModel)]="filtroEscuela" class="form-select">
-          <option value="">Todos</option>
-          <option value="sistemas">Ingeniería de Sistemas</option>
-          <option value="civil">Ingeniería Civil</option>
-        </select>
-      </div>
-    </div>
+            <div class="filter-item">
+              <label>Escuela profesional</label>
+              <select [(ngModel)]="filtroEscuela" class="form-select" [disabled]="!filtroFacultad" (change)="onEscuelaChange()">
+                <option value="">{{filtroFacultad ? 'Seleccionar escuela' : 'Primero selecciona una facultad'}}</option>
+                <option *ngFor="let escuela of escuelasDisponibles" [value]="escuela.id_programa_estudio">
+                  {{escuela.nombre}}
+                </option>
+              </select>
+            </div>
+          </div>
 
-    <!-- Segunda fila: 4 elementos -->
-    <div class="filters-row-2">
-      <div class="filter-item">
-        <label>Programa Estudio</label>
-        <select [(ngModel)]="filtroPrograma" class="form-select">
-          <option value="">2024-1</option>
-          <option value="2024-1">2024-1</option>
-          <option value="2024-2">2024-2</option>
-        </select>
-      </div>
+          <!-- Segunda fila: 3 elementos -->
+          <div class="filters-row-2">
+            <div class="filter-item">
+              <label>Semestre</label>
+              <select [(ngModel)]="filtroSemestre" class="form-select">
+                <option value="">Seleccionar semestre</option>
+                <option *ngFor="let semestre of semestresDisponibles" [value]="semestre.id_semestre">{{semestre.nombre}}</option>
+              </select>
+            </div>
 
-      <div class="filter-item">
-        <label>Semestre</label>
-        <select [(ngModel)]="filtroSemestre" class="form-select">
-          <option value="">EP2024-1 Tesis formato pregrado</option>
-          <option value="2025-1">EP2024-1 Tesis formato pregrado</option>
-          <option value="2024-2">EP2024-2 Prácticas profesionales</option>
-        </select>
-      </div>
+            <div class="filter-item">
+              <label>Tipo de Práctica</label>
+              <select [(ngModel)]="filtroTipoPractica" class="form-select">
+                <option value="">PPP</option>
+                <option value="ppp">PPP</option>
+                <option value="pasantia">Pasantía</option>
+              </select>
+            </div>
 
-      <div class="filter-item">
-        <label>Tipo de Práctica</label>
-        <select [(ngModel)]="filtroTipoPractica" class="form-select">
-          <option value="">PPP</option>
-          <option value="ppp">PPP</option>
-          <option value="pasantia">Pasantía</option>
-        </select>
-      </div>
-
-      <div class="button-item">
-        <label>Filtro de búsqueda</label>
-        <button class="btn-apply" (click)="aplicarFiltros()">
-          <ion-icon name="funnel-outline"></ion-icon>
-          Aplicar búsqueda
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Pestañas -->
-  <div class="tabs-container">
-    <button class="tab-btn active" [class.active]="tabActiva === 'cartas'" (click)="cambiarTab('cartas')">
-      <ion-icon name="mail-outline"></ion-icon>
-      Carta
-    </button>
-  </div>
-
-  <div class="my-div"></div>
-
-  <!-- Contenido de la tabla -->
-  <div class="table-content">
-    <!-- Barra de título y controles de la tabla -->
-    <div class="table-header">
-      <div class="table-title-section">
-        <h3 class="table-title">
-          <ion-icon name="list-outline"></ion-icon>
-          Cartas de Recomendación
-        </h3>
-      </div>
-
-      <div class="table-controls">
-        <div class="estado-control">
-          <label>Estado:</label>
-          <select [(ngModel)]="filtroEstado" class="small-select">
-            <option value="">Todos</option>
-            <option value="enviado">Enviado</option>
-            <option value="revisión">Revisión</option>
-            <option value="rechazado">Rechazado</option>
-          </select>
-        </div>
-
-        <button class="btn-sort" (click)="ordenarTabla()" title="Ordenar A-Z">
-          AZ
-        </button>
-
-        <div class="search-control">
-          <ion-icon name="search-outline"></ion-icon>
-          <input type="text" placeholder="Buscar código..." [(ngModel)]="textoBusqueda">
-        </div>
-      </div>
-    </div>
-
-    <!-- Mensaje de error -->
-    <div *ngIf="error" class="error-message">
-      <ion-icon name="alert-circle-outline"></ion-icon>
-      <span>{{ error }}</span>
-      <button (click)="actualizar()" class="retry-btn">Reintentar</button>
-    </div>
-
-    <!-- Tabla -->
-    <div class="table-wrapper">
-      <!-- Indicador de carga -->
-      <div *ngIf="loading" class="loading-indicator">
-        <ion-icon name="refresh-outline" class="spinning"></ion-icon>
-        <span>Cargando cartas...</span>
-      </div>
-
-      <table class="data-table" *ngIf="!loading">
-        <thead>
-          <tr>
-            <th>N°</th>
-            <th>Nombre del practicante</th>
-            <th>Código</th>
-            <th>E.P</th>
-            <th>Estado</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let carta of cartasPaginadas; let i = index">
-            <td class="numero">{{ formatNumber((paginaActual * itemsPorPagina) + i + 1) }}</td>
-            <td class="empresa-name">{{ carta.nombrePracticante }}</td>
-            <td class="representante-cell">{{ carta.codigo }}</td>
-            <td class="contacto-cell">{{ carta.escuelaProfesional }}</td>
-            <td class="estado-cell">
-              <span class="status-badge" [class]="'status-' + carta.estado.toLowerCase()">
-                {{ carta.estado }}
-              </span>
-            </td>
-            <td class="actions-cell">
-              <button class="action-btn yellow" title="Ver detalle">
-                <ion-icon name="eye-outline"></ion-icon>
-                Ver
+            <div class="button-item">
+              <label>Filtro de búsqueda</label>
+              <button class="btn-apply" (click)="aplicarFiltros()">
+                <ion-icon name="funnel-outline"></ion-icon>
+                Aplicar búsqueda
               </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+            </div>
+          </div>
+        </div>
 
-      <!-- Mensaje cuando no hay datos -->
-      <div *ngIf="!loading && cartasPaginadas.length === 0" class="no-data-message">
-        <ion-icon name="document-outline"></ion-icon>
-        <span>No se encontraron cartas</span>
-        <small *ngIf="textoBusqueda || filtroEstado">Intenta ajustar los filtros de búsqueda</small>
-      </div>
-    </div>
-
-    <!-- Paginación -->
-    <div class="pagination">
-      <div class="pagination-left">
-        <span>Filas</span>
-        <select [(ngModel)]="itemsPorPagina" (change)="cambiarItemsPorPagina()" class="rows-select">
-          <option value="5">5</option>
-          <option value="10">10</option>
-          <option value="25">25</option>
-          <option value="50">50</option>
-        </select>
-      </div>
-      
-      <div class="pagination-controls">
-        <button class="page-btn" [disabled]="paginaActual === 0" (click)="irAPagina(0)">
-          <ion-icon name="play-back-outline"></ion-icon>
-        </button>
-        <button class="page-btn" [disabled]="paginaActual === 0" (click)="paginaAnterior()">
-          <ion-icon name="chevron-back-outline"></ion-icon>
-        </button>
-        
-        <div class="page-numbers">
-          <button 
-            *ngFor="let pagina of getPaginas()" 
-            class="page-number"
-            [class.active]="pagina === paginaActual + 1"
-            (click)="irAPagina(pagina - 1)">
-            {{ pagina }}
+        <!-- Pestañas -->
+        <div class="tabs-container">
+          <button class="tab-btn active" [class.active]="tabActiva === 'cartas'" (click)="cambiarTab('cartas')">
+            <ion-icon name="mail-outline"></ion-icon>
+            Carta
           </button>
         </div>
-        
-        <button class="page-btn" [disabled]="paginaActual === totalPaginas - 1" (click)="paginaSiguiente()">
-          <ion-icon name="chevron-forward-outline"></ion-icon>
-        </button>
-        <button class="page-btn" [disabled]="paginaActual === totalPaginas - 1" (click)="irAPagina(totalPaginas - 1)">
-          <ion-icon name="play-forward-outline"></ion-icon>
-        </button>
-      </div>
 
-      <span class="pagination-info">
-        {{ (paginaActual * itemsPorPagina) + 1 }} al {{ Math.min((paginaActual + 1) * itemsPorPagina, cartasFiltradas.length) }} de {{ cartasFiltradas.length }} selecciones
-      </span>
-    </div>
+        <div class="my-div"></div>
+
+        <!-- Contenido de la tabla -->
+        <div class="table-content">
+          <!-- Barra de título y controles de la tabla -->
+          <div class="table-header">
+            <div class="table-title-section">
+              <h3 class="table-title">
+                <ion-icon name="list-outline"></ion-icon>
+                Cartas de Recomendación
+              </h3>
+            </div>
+
+            <div class="table-controls">
+              <div class="estado-control">
+                <label>Estado:</label>
+                <select [(ngModel)]="filtroEstado" class="small-select">
+                  <option value="">Todos</option>
+                  <option value="enviado">Enviado</option>
+                  <option value="revisión">Revisión</option>
+                  <option value="rechazado">Rechazado</option>
+                </select>
+              </div>
+
+              <button class="btn-sort" (click)="ordenarTabla()" title="Ordenar A-Z">
+                AZ
+              </button>
+
+              <div class="search-control">
+                <ion-icon name="search-outline"></ion-icon>
+                <input type="text" placeholder="Buscar código..." [(ngModel)]="textoBusqueda">
+              </div>
+            </div>
+          </div>
+
+          <!-- Mensaje de error -->
+          <div *ngIf="error" class="error-message">
+            <ion-icon name="alert-circle-outline"></ion-icon>
+            <span>{{ error }}</span>
+            <button (click)="actualizar()" class="retry-btn">Reintentar</button>
+          </div>
+
+          <!-- Tabla -->
+          <div class="table-wrapper">
+            <!-- Indicador de carga -->
+            <div *ngIf="loading" class="loading-indicator">
+              <ion-icon name="refresh-outline" class="spinning"></ion-icon>
+              <span>Cargando cartas...</span>
+            </div>
+
+            <table class="data-table" *ngIf="!loading">
+              <thead>
+                <tr>
+                  <th>N°</th>
+                  <th>Nombre del practicante</th>
+                  <th>Código</th>
+                  <th>E.P</th>
+                  <th>Estado</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Mostrar cartas filtradas de API si hay filtros aplicados -->
+                <ng-container *ngIf="cartasFiltradasAPI.length > 0">
+                  <tr *ngFor="let carta of cartasFiltradasPaginadas; let i = index">
+                    <td class="numero">{{ formatNumber((paginaActual * itemsPorPagina) + i + 1) }}</td>
+                    <td class="empresa-name">{{ carta.alumno_completo }}</td>
+                    <td class="representante-cell">{{ carta.codigo_alumno }}</td>
+                    <td class="contacto-cell">{{ carta.programa_nombre }}</td>
+                    <td class="estado-cell">
+                      <span class="status-badge" [class]="'status-' + obtenerEstadoTexto(carta.estado).toLowerCase()">
+                        {{ obtenerEstadoTexto(carta.estado) }}
+                      </span>
+                    </td>
+                    <td class="actions-cell">
+                      <button class="action-btn yellow" title="Ver detalle" (click)="verDetalleCartaFiltrada(carta)">
+                        <ion-icon name="eye-outline"></ion-icon>
+                        Ver
+                      </button>
+                    </td>
+                  </tr>
+                </ng-container>
+                
+                <!-- Mostrar cartas originales si no hay filtros aplicados -->
+                <ng-container *ngIf="cartasFiltradasAPI.length === 0">
+                  <tr *ngFor="let carta of cartasPaginadas; let i = index">
+                    <td class="numero">{{ formatNumber((paginaActual * itemsPorPagina) + i + 1) }}</td>
+                    <td class="empresa-name">{{ carta.nombrePracticante }}</td>
+                    <td class="representante-cell">{{ carta.codigo }}</td>
+                    <td class="contacto-cell">{{ carta.escuelaProfesional }}</td>
+                    <td class="estado-cell">
+                      <span class="status-badge" [class]="'status-' + obtenerEstadoTexto(carta.estado).toLowerCase()">
+                        {{ obtenerEstadoTexto(carta.estado) }}
+                      </span>
+                    </td>
+                    <td class="actions-cell">
+                      <button class="action-btn yellow" title="Ver detalle" (click)="verDetalleCarta(carta)">
+                        <ion-icon name="eye-outline"></ion-icon>
+                        Ver
+                      </button>
+                    </td>
+                  </tr>
+                </ng-container>
+              </tbody>
+            </table>
+
+            <!-- Mensaje cuando no hay datos -->
+            <div *ngIf="!loading && cartasPaginadas.length === 0 && cartasFiltradasPaginadas.length === 0" class="no-data-message">
+              <ion-icon name="document-outline"></ion-icon>
+              <span>No se encontraron cartas</span>
+              <small *ngIf="textoBusqueda || filtroEstado">Intenta ajustar los filtros de búsqueda</small>
+            </div>
+          </div>
+
+          <!-- Paginación -->
+          <div class="pagination">
+            <div class="pagination-left">
+              <span>Filas</span>
+              <select [(ngModel)]="itemsPorPagina" (change)="cambiarItemsPorPagina()" class="rows-select">
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="25">25</option>
+                <option value="50">50</option>
+              </select>
+            </div>
+            
+            <div class="pagination-controls">
+              <!-- Flecha doble izquierda -->
+              <button class="page-btn" [disabled]="paginaActual === 0" (click)="irAPagina(0)" title="Primera página">
+                <ion-icon name="chevron-back-outline"></ion-icon>
+                <ion-icon name="chevron-back-outline" style="margin-left: -8px;"></ion-icon>
+              </button>
+              
+              <!-- Flecha simple izquierda -->
+              <button class="page-btn" [disabled]="paginaActual === 0" (click)="paginaAnterior()" title="Página anterior">
+                <ion-icon name="chevron-back-outline"></ion-icon>
+              </button>
+              
+              <!-- Números de página con puntos suspensivos -->
+              <div class="page-numbers">
+                <ng-container *ngFor="let item of getPaginasConPuntos(); let i = index">
+                  <button 
+                    *ngIf="item.tipo === 'numero' && item.numero"
+                    class="page-number"
+                    [class.active]="item.numero === paginaActual + 1"
+                    (click)="irAPagina(item.numero! - 1)">
+                    {{ item.numero }}
+                  </button>
+                  <span 
+                    *ngIf="item.tipo === 'puntos'"
+                    class="page-ellipsis">
+                    ...
+                  </span>
+                </ng-container>
+              </div>
+              
+              <!-- Flecha simple derecha -->
+              <button class="page-btn" [disabled]="paginaActual === totalPaginas - 1" (click)="paginaSiguiente()" title="Página siguiente">
+                <ion-icon name="chevron-forward-outline"></ion-icon>
+              </button>
+              
+              <!-- Flecha doble derecha -->
+              <button class="page-btn" [disabled]="paginaActual === totalPaginas - 1" (click)="irAPagina(totalPaginas - 1)" title="Última página">
+                <ion-icon name="chevron-forward-outline"></ion-icon>
+                <ion-icon name="chevron-forward-outline" style="margin-left: -8px;"></ion-icon>
+              </button>
+            </div>
+
+            <span class="pagination-info">
+              {{ (paginaActual * itemsPorPagina) + 1 }} al {{ Math.min((paginaActual + 1) * itemsPorPagina, cartasFiltradas.length) }} de {{ cartasFiltradas.length }} solicitudes
+            </span>
+          </div>
+        </div>
+      </div>
+    }
+
+    <!-- Vista de detalle de carta (Renderizado condicional) -->
+    @else {
+      <div class="detail-view slide-in-right">
+        
+        <!-- Pestaña Carta integrada -->
+        <div class="carta-tab-integrada">
+          <div class="carta-tab-content">
+            <ion-icon name="mail-outline"></ion-icon>
+            <span>Carta</span>
+          </div>
+        </div>
+
+        <!-- Sección de formulario/revisión como encabezado del cuadro -->
+        <div class="formulario-revision-integrado">
+          <div class="formulario-revision-content">
+            <ion-icon name="lock-closed-outline"></ion-icon>
+            <span>Formulario|Revisión</span>
+          </div>
+        </div>
+
+        <!-- Contenedor del formulario con cuadro blanco -->
+        <div class="formulario-cuadro">
+          <!-- Indicador de pasos horizontal -->
+          <div class="pasos-indicador">
+            <div class="paso-item" [class.active]="pasoActual() === 1" [class.completed]="pasoActual() > 1">
+              <div class="paso-circulo">
+                <ion-icon name="checkmark-outline" *ngIf="pasoActual() > 1"></ion-icon>
+                <span *ngIf="pasoActual() === 1">✓</span>
+              </div>
+              <span class="paso-label">PASO 01</span>
+              <span class="paso-descripcion">Información de carta</span>
+            </div>
+            <div class="paso-linea" [class.completed]="pasoActual() > 1"></div>
+            <div class="paso-item" [class.active]="pasoActual() === 2" [class.completed]="pasoActual() > 2">
+              <div class="paso-circulo">
+                <ion-icon name="checkmark-outline" *ngIf="pasoActual() > 2"></ion-icon>
+                <span *ngIf="pasoActual() <= 2">2</span>
+              </div>
+              <span class="paso-label">PASO 02</span>
+              <span class="paso-descripcion">Pre visualización</span>
+            </div>
+            <div class="paso-linea" [class.completed]="pasoActual() > 2"></div>
+            <div class="paso-item" [class.active]="pasoActual() === 3">
+              <div class="paso-circulo">
+                <ion-icon name="person-outline"></ion-icon>
+              </div>
+              <span class="paso-label">PASO 03</span>
+              <span class="paso-descripcion">Confirmación y creación</span>
+            </div>
+          </div>
+
+          <!-- Formulario contenido PASO 01 -->
+          @if (pasoActual() === 1) {
+            <div class="formulario-contenido">
+              <div class="formulario-grid-dos-columnas">
+                <div class="form-group">
+                  <label>Área de Práctica</label>
+                  <input type="text" class="form-control" placeholder="Selecciona Área" [value]="cartaSeleccionada()?.areaPractica || 'No especificada'" [readonly]="cartaAprobada()">
+                </div>
+
+                <div class="form-group">
+                  <label>Nueva empresa</label>
+                  <input type="text" class="form-control" placeholder="Escribe empresa" [value]="cartaSeleccionada()?.nuevaEmpresa || 'No especificada'" [readonly]="cartaAprobada()">
+                </div>
+
+                <div class="form-group">
+                  <label>Empresa</label>
+                  <input type="text" class="form-control" placeholder="Selecciona empresa" [value]="cartaSeleccionada()?.empresa || 'No especificada'" [readonly]="cartaAprobada()">
+                </div>
+
+                <div class="form-group">
+                  <label>Cargo del Responsable</label>
+                  <input type="text" class="form-control" placeholder="Ingresar cargo de responsable dentro de establecimiento" [value]="cartaSeleccionada()?.cargoResponsable || 'No especificado'" [readonly]="cartaAprobada()">
+                </div>
+
+                <div class="form-group">
+                  <label>Grado Académico</label>
+                  <input type="text" class="form-control" placeholder="Ingresar grado académico" [value]="cartaSeleccionada()?.gradoAcademico || 'No especificado'" [readonly]="cartaAprobada()">
+                </div>
+
+                <div class="form-group">
+                  <label>Procedencia de Empresa</label>
+                  <input type="text" class="form-control" placeholder="Ingresar Procedencia" [value]="cartaSeleccionada()?.procedenciaEmpresa || 'No especificada'" [readonly]="cartaAprobada()">
+                </div>
+
+                <div class="form-group">
+                  <label>Representante Legal</label>
+                  <input type="text" class="form-control" placeholder="Ingresar nombre de representante" [value]="cartaSeleccionada()?.representanteLegal || 'No especificado'" [readonly]="cartaAprobada()">
+                </div>
+
+                <div class="form-group">
+                  <label>Contacto</label>
+                  <input type="text" class="form-control" placeholder="Ingresar forma de contacto" [value]="cartaSeleccionada()?.contacto || 'No especificado'" [readonly]="cartaAprobada()">
+                </div>
+
+                <div class="form-group">
+                  <label>Horas</label>
+                  <input type="text" class="form-control" placeholder="Horas por cumplir" [value]="(cartaSeleccionada()?.horas || 0) + ' horas'" [readonly]="cartaAprobada()">
+                </div>
+
+                <div class="form-group fechas-grupo-completo">
+                  <div class="fechas-grupo">
+                    <div class="fecha-item">
+                      <label>Fecha Inicio</label>
+                      <input type="text" class="form-control" placeholder="DD/MM/AAAA" [value]="cartaSeleccionada()?.fechaInicio || 'No especificada'" [readonly]="cartaAprobada()">
+                    </div>
+                    <div class="fecha-item">
+                      <label>Fecha Fin</label>
+                      <input type="text" class="form-control" placeholder="DD/MM/AAAA" [value]="cartaSeleccionada()?.fechaFin || 'No especificada'" [readonly]="cartaAprobada()">
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label>Evaluación CAPSI</label>
+                  <div class="archivo-upload">
+                    <ion-icon name="document-outline"></ion-icon>
+                    <span>{{cartaSeleccionada()?.evaluacionCapsi || 'No disponible'}}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          }
+
+          <!-- Vista previsualización PASO 02 -->
+          @if (pasoActual() === 2) {
+            <div class="previsualizacion-contenido">
+              <div class="carta-preview">
+                
+                <div class="carta-seccion">
+                  <h4 class="seccion-titulo">Presentación</h4>
+                  <div class="carta-contenido">
+                    <p><strong>Con atención:</strong></p>
+                    <p>{{ cartaSeleccionada()?.representanteLegal || 'Nelyt Delcarmen Alegre Reategui' }}</p>
+                    <p>{{ cartaSeleccionada()?.cargoResponsable || 'Psicólogo' }}</p>
+                  </div>
+                </div>
+
+                <div class="carta-seccion">
+                  <h4 class="seccion-titulo">Cuerpo</h4>
+                  <div class="carta-contenido">
+                    <p>Estimada Licenciada Mori:</p>
+                    <p>Es grato saludarle de parte de la Escuela Profesional de {{ cartaSeleccionada()?.escuela || 'Psicología' }} de la Universidad Peruana Unión Campus {{ cartaSeleccionada()?.sede || 'Tarapoto' }}, acompañado del deseo de abundantes bendiciones en la tarea que desempeña.</p>
+                    <p>En esta oportunidad presento a los estudiantes del V ciclo de la Carrera de {{ cartaSeleccionada()?.escuela || 'Psicología' }}, quienes desean realizar sus Prácticas Pre-Profesionales Formativas en el área de {{ cartaSeleccionada()?.areaPractica || 'Psicología Educativa' }}, haciendo un total de {{ cartaSeleccionada()?.horas || '100' }} horas. Según las siguientes especificaciones. Adjunto ficha de evaluación de prácticas.</p>
+                  </div>
+                </div>
+
+                <div class="carta-seccion">
+                  <h4 class="seccion-titulo">Despedida</h4>
+                  <div class="carta-contenido">
+                    <p>Reiterándole mi aprecio y agradeciendo el apoyo que brinda a nuestros futuros profesionales, me suscribo.</p>
+                    <p>Atentamente,</p>
+                  </div>
+                </div>
+                
+              </div>
+            </div>
+          }
+
+          <!-- Botones de acción según el paso -->
+          @if (pasoActual() === 1) {
+            @if (!cartaAprobada()) {
+              <div class="acciones-paso">
+                <button class="btn-accion rechazar" (click)="rechazarCarta()">
+                  <ion-icon name="close"></ion-icon>
+                  Rechazar
+                </button>
+                <button class="btn-accion aprobar" (click)="aprobarCarta()">
+                  <ion-icon name="checkmark"></ion-icon>
+                  Aprobar
+                </button>
+              </div>
+            } @else {
+              <div class="mensaje-confirmacion">
+                <div class="confirmacion-contenido">
+                  <ion-icon name="checkmark-circle" class="icono-confirmacion"></ion-icon>
+                  <span class="texto-confirmacion">Confirmado puede continuar con la carta de presentación</span>
+                </div>
+                <button class="btn-siguiente" (click)="siguienteAprobacion()">
+                  <ion-icon name="arrow-forward-outline"></ion-icon>
+                  Siguiente
+                </button>
+              </div>
+            }
+          }
+          
+          @if (pasoActual() === 2) {
+            <div class="acciones-paso-navegacion">
+              <button class="btn-navegacion atras" (click)="anteriorPaso()">
+                <ion-icon name="arrow-back-outline"></ion-icon>
+                Atrás
+              </button>
+              <button class="btn-navegacion siguiente" (click)="siguientePaso()">
+                <ion-icon name="arrow-forward-outline"></ion-icon>
+                Siguiente
+              </button>
+            </div>
+          }
+        </div>
+
+      </div>
+    }
+
   </div>
 </div>

@@ -4,6 +4,16 @@
   background-color: transparent;
   min-height: 100vh;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+  scroll-behavior: smooth; /* Scroll suave global */
+}
+
+/* Selector global para scroll suave */
+html {
+  scroll-behavior: smooth;
+}
+
+* {
+  scroll-behavior: smooth;
 }
 
 /* ==================== HEADER ==================== */
@@ -588,6 +598,16 @@
   color: #721c24;
 }
 
+.status-pendiente {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.status-aprobado {
+  background: #d4edda;
+  color: #155724;
+}
+
 .actions-cell {
   text-align: center;
 }
@@ -673,27 +693,47 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 20px;
+  padding: 16px 20px;
   margin-top: 16px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
 }
 
+/* COLUMNA IZQUIERDA - Selector de filas */
 .pagination-left {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 13px;
-  color: #666;
+  gap: 10px;
   flex: 1;
 }
 
-.rows-select {
-  padding: 4px 8px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 12px;
-  background: white;
+.pagination-left span {
+  font-size: 14px;
+  color: #4b5563;
+  font-weight: 500;
 }
 
+.rows-select {
+  padding: 6px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 20px;
+  font-size: 13px;
+  background: white;
+  color: #374151;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 60px;
+  outline: none;
+}
+
+.rows-select:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+}
+
+/* COLUMNA CENTRO - Controles de paginación */
 .pagination-controls {
   display: flex;
   align-items: center;
@@ -704,17 +744,17 @@
 
 .page-btn {
   background: white;
-  border: 2px solid #d1d5db;
+  border: 1px solid #d1d5db;
   border-radius: 50%;
-  padding: 8px;
+  padding: 0;
   cursor: pointer;
   font-size: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
-  color: #6b7280;
+  width: 32px;
+  height: 32px;
+  color: #003264;
   transition: all 0.2s ease;
 }
 
@@ -724,9 +764,14 @@
 }
 
 .page-btn:disabled {
-  opacity: 0.3;
-  cursor: not-allowed;
   color: #d1d5db;
+  cursor: not-allowed;
+  border-color: #e5e7eb;
+}
+
+.page-btn:disabled:hover {
+  background: white;
+  transform: none;
 }
 
 .page-numbers {
@@ -738,23 +783,24 @@
 
 .page-number {
   background: white;
-  border: 2px solid #d1d5db;
+  border: 1px solid #d1d5db;
   border-radius: 50%;
-  padding: 8px;
+  padding: 0;
   cursor: pointer;
   font-size: 14px;
   font-weight: 500;
-  min-width: 40px;
-  height: 40px;
+  min-width: 32px;
+  height: 32px;
   text-align: center;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all 0.2s ease;
   color: #374151;
+  font-family: inherit;
 }
 
-.page-number:hover {
+.page-number:hover:not(.active) {
   border-color: #9ca3af;
   background: #f9fafb;
 }
@@ -765,9 +811,24 @@
   border-color: #14b8a6;
 }
 
+/* Puntos suspensivos */
+.page-ellipsis {
+  color: #6b7280;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 0 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  height: 32px;
+}
+
+/* COLUMNA DERECHA - Información */
 .pagination-info {
-  font-size: 13px;
-  color: #666;
+  font-size: 14px;
+  color: #1f2937;
+  font-weight: 600;
   flex: 1;
   text-align: right;
 }
@@ -849,9 +910,1196 @@
   .pagination {
     flex-direction: column;
     gap: 12px;
+    padding: 12px 16px;
   }
   
   .pagination-controls {
     order: -1;
+    gap: 4px;
   }
+  
+  .page-btn {
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
+  }
+  
+  .page-number {
+    min-width: 28px;
+    height: 28px;
+    font-size: 13px;
+  }
+  
+  .pagination-info {
+    text-align: center;
+    font-size: 13px;
+  }
+  
+  .pagination-left {
+    justify-content: center;
+  }
+}
+
+/* ==================== DETALLE CARTA STYLES ==================== */
+
+/* Indicador de pasos horizontal - ancho completo */
+.pasos-indicador {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin: 25px 0;
+  position: relative;
+  padding: 0 20px;
+}
+
+.paso-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+  flex: 1;
+}
+
+.paso-circulo {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #f0f0f0;
+  border: 2px solid #e0e0e0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #666;
+  transition: all 0.3s ease;
+  font-size: 12px;
+}
+
+.paso-item.active .paso-circulo {
+  background: #007bff;
+  border-color: #007bff;
+  color: white;
+}
+
+.paso-item.completed .paso-circulo {
+  background: #28a745;
+  border-color: #28a745;
+  color: white;
+}
+
+.paso-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 3px;
+}
+
+.paso-descripcion {
+  font-size: 10px;
+  color: #666;
+  max-width: 120px;
+}
+
+.paso-linea {
+  flex: 1;
+  height: 2px;
+  background: #e0e0e0;
+  margin: 0 15px;
+  position: relative;
+  top: -16px;
+}
+
+.paso-linea.completed {
+  background: #28a745;
+}
+
+/* Formulario contenido */
+.formulario-contenido {
+  background: white;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  padding: 30px;
+  margin: 30px 0;
+}
+
+.formulario-grid-dos-columnas {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+/* Grupo de fechas en la misma celda */
+.fechas-grupo {
+  display: flex;
+  gap: 10px;
+}
+
+.fecha-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.fecha-item label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.fechas-grupo .form-control {
+  padding: 12px 16px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+  background: white;
+  color: #666;
+  transition: border-color 0.3s ease;
+}
+
+.formulario-row {
+  margin-bottom: 20px;
+}
+
+.formulario-row-dual {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 6px;
+}
+
+.form-control {
+  padding: 10px 14px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 13px;
+  background: #f8f9fa;
+  color: #666;
+  transition: border-color 0.3s ease;
+}
+
+.form-control:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.archivo-upload {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  background: #e3f2fd;
+  border: 1px solid #2196f3;
+  border-radius: 6px;
+  color: #1976d2;
+  font-size: 14px;
+}
+
+.archivo-upload ion-icon {
+  font-size: 18px;
+}
+
+/* Contenedor principal del detalle con scroll controlado */
+.detalle-carta-container {
+  padding: 20px;
+  background: #f8fafc;
+  height: calc(100vh - 120px); /* Altura ajustada para dejar espacio al navbar */
+  overflow-y: auto;
+  overflow-x: hidden;
+  animation: fadeInUp 0.4s ease-out;
+  /* Posición relativa para mantener el layout */
+  position: relative;
+}
+
+/* Bloquear scroll general cuando el detalle está activo - manteniendo navbar/sidebar */
+:global(body.detalle-activo) {
+  overflow: hidden !important;
+  position: fixed !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+:global(html.detalle-activo) {
+  overflow: hidden !important;
+  height: 100% !important;
+}
+
+/* Asegurar que el navbar y sidebar sigan funcionando */
+:global(body.detalle-activo) .navbar,
+:global(body.detalle-activo) .sidebar,
+:global(body.detalle-activo) .header,
+:global(body.detalle-activo) nav {
+  position: relative !important;
+  z-index: 1000 !important;
+}
+
+/* Solo el contenedor de detalle puede hacer scroll */
+:global(body.detalle-activo) .detalle-carta-container {
+  overflow-y: auto !important;
+  height: calc(100vh - 120px) !important;
+  position: relative !important;
+  z-index: 999 !important;
+}
+
+/* Contenido del detalle */
+.detalle-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  min-height: calc(100vh - 160px);
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Loading del detalle */
+.loading-detalle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  color: #6b7280;
+  gap: 12px;
+  background: white;
+  border-radius: 8px;
+  margin: 20px 0;
+}
+
+.loading-detalle ion-icon {
+  font-size: 32px;
+  animation: spin 1s linear infinite;
+}
+
+/* Header del detalle */
+.detalle-header {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+  border-left: 4px solid #063568;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.header-icon {
+  width: 40px;
+  height: 40px;
+  background: #063568;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 20px;
+}
+
+.detalle-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #063568;
+  margin: 0;
+}
+
+.detalle-subtitle {
+  font-size: 13px;
+  color: #6b7280;
+  margin: 0;
+}
+
+.btn-actualizar {
+  background: white;
+  color: #2c5aa0;
+  border: 1px solid #2c5aa0;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.btn-actualizar:hover {
+  background: #2c5aa0;
+  color: white;
+  transform: translateY(-1px);
+}
+
+/* Pestañas del detalle */
+.detalle-tabs {
+  background: white;
+  border-radius: 8px;
+  padding: 0 24px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+}
+
+.detalle-tab {
+  background: none;
+  border: none;
+  padding: 16px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #063568;
+  border-bottom: 2px solid #063568;
+  cursor: pointer;
+}
+
+/* Formulario/Revisión header */
+.formulario-revision-header {
+  background: #e3f2fd;
+  border: 1px solid #2196f3;
+  border-radius: 8px;
+  padding: 15px 20px;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.formulario-revision-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: #1976d2;
+  font-weight: 500;
+  font-size: 16px;
+}
+
+.formulario-revision-content ion-icon {
+  font-size: 20px;
+}
+
+/* Sección de permisos del detalle */
+.permisos-detalle {
+  background: white;
+  border-radius: 8px;
+  padding: 16px 24px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+}
+
+.permisos-header-detalle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #374151;
+  background: #e0f2fe;
+  padding: 8px 16px;
+  border-radius: 20px;
+  display: inline-flex;
+}
+
+.permisos-header-detalle ion-icon {
+  color: #0ea5e9;
+  font-size: 16px;
+}
+
+/* Contenedor de pasos con fondo blanco */
+.paso-container {
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 24px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+}
+
+/* Pestaña Carta integrada */
+.carta-tab-integrada {
+  margin-bottom: 15px;
+  position: relative;
+  display: inline-block; /* Solo el ancho del contenido */
+}
+
+.carta-tab-content {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #1976d2;
+  font-weight: 500;
+  font-size: 14px;
+  padding-bottom: 8px;
+}
+
+.carta-tab-content ion-icon {
+  font-size: 18px;
+}
+
+/* Línea naranja debajo de Carta (solo el ancho del contenido) */
+.carta-tab-integrada::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%; /* Solo el ancho del contenido "Carta" */
+  height: 3px;
+  background: #ff9800; /* Color naranja */
+  border-radius: 2px 2px 0 0;
+}
+
+/* Línea separadora */
+.separador-linea {
+  height: 1px;
+  background: #e0e0e0;
+  margin: 15px 0;
+}
+
+/* Contenedor del formulario con cuadro blanco */
+.formulario-cuadro {
+  background: white;
+  border: 1px solid #e0e0e0; /* Borde gris en lugar de azul */
+  border-top: none; /* Sin borde superior para que se conecte con el encabezado */
+  border-radius: 0 0 8px 8px; /* Solo redondo abajo */
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+}
+
+/* Formulario/Revisión integrado con fondo celeste como encabezado */
+.formulario-revision-integrado {
+  text-align: center;
+  margin-bottom: 0; /* Sin espacio para que se conecte con el cuadro */
+  background: #e3f2fd;
+  border: 1px solid #e0e0e0; /* Borde gris en lugar de azul */
+  border-bottom: none; /* Sin borde inferior para que se conecte con el cuadro */
+  border-radius: 8px 8px 0 0; /* Solo redondo arriba */
+  padding: 15px 20px;
+}
+
+.formulario-revision-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: #1976d2;
+  font-weight: 500;
+  font-size: 16px;
+}
+
+.formulario-revision-content ion-icon {
+  font-size: 20px;
+}
+
+/* Grid de pasos */
+.pasos-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+/* Tarjeta de cada paso */
+.paso-card {
+  background: #f8fafc;
+  border-radius: 8px;
+  padding: 16px;
+  border-left: 4px solid #e5e7eb;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.paso-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transform: translateY(-1px);
+}
+
+.paso-card.active {
+  border-left-color: #0ea5e9;
+  background: #f0f9ff;
+}
+
+/* Header de cada paso */
+.paso-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.paso-number {
+  background: white;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #6b7280;
+  border: 1px solid #e5e7eb;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.paso-status {
+  font-size: 24px;
+  color: #d1d5db;
+  transition: all 0.2s ease;
+}
+
+.paso-status.completed {
+  color: #10b981;
+}
+
+.paso-status.active {
+  color: #0ea5e9;
+}
+
+.paso-status.pending {
+  color: #d1d5db;
+}
+
+/* Contenido de cada paso */
+.paso-content {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.paso-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.paso-field label {
+  font-size: 11px;
+  color: #6b7280;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.paso-field span {
+  font-size: 13px;
+  color: #374151;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+/* Contenido expandido para paso 3 */
+.paso-content-expandido {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.coordinador-info h4,
+.descripcion-detallada h4,
+.observaciones h4 {
+  font-size: 12px;
+  font-weight: 700;
+  color: #374151;
+  margin: 0 0 8px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.coordinador-info p,
+.descripcion-detallada p,
+.observaciones p {
+  font-size: 12px;
+  color: #6b7280;
+  margin: 0 0 6px 0;
+  line-height: 1.5;
+}
+
+/* Avatares de usuarios */
+.usuarios-avatares {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin: 24px 0;
+}
+
+.avatar-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.avatar-label {
+  font-size: 11px;
+  color: #6b7280;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.avatar-value {
+  font-size: 13px;
+  color: #374151;
+  font-weight: 500;
+}
+
+.avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 18px;
+  color: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.avatar.estudiante {
+  background: linear-gradient(135deg, #ec4899, #db2777);
+}
+
+.avatar.coordinador {
+  background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+}
+
+/* Mensaje de confirmación */
+.confirmacion-mensaje {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: #e0f2fe;
+  color: #0369a1;
+  padding: 12px 20px;
+  border-radius: 8px;
+  margin: 16px 0;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.confirmacion-mensaje ion-icon {
+  font-size: 20px;
+}
+
+/* Botones de acción */
+.acciones-paso {
+  display: flex;
+  justify-content: center;
+  gap: 70px;
+  margin-top: 24px;
+}
+
+.btn-accion {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 18px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: all 0.2s ease;
+  min-width: 100px;
+  justify-content: center;
+  text-transform: none;
+  letter-spacing: 0;
+  box-shadow: none;
+}
+
+.btn-accion:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.btn-accion.rechazar {
+  background: #fce7e6;
+  color: #d32f2f;
+  border: 1px solid #ffcdd2;
+}
+
+.btn-accion.rechazar:hover {
+  background: #f8d7da;
+  color: #b71c1c;
+}
+
+.btn-accion.aprobar {
+  background: #e0f2f1;
+  color: #00838f;
+  border: 1px solid #b2dfdb;
+}
+
+.btn-accion.aprobar:hover {
+  background: #b2dfdb;
+  color: #006064;
+}
+
+.btn-accion ion-icon {
+  font-size: 14px;
+  margin-right: 1px;
+}
+
+.btn-accion.primario {
+  background: linear-gradient(135deg, #0ea5e9, #0284c7);
+  color: white;
+}
+
+.btn-accion.secundario {
+  background: white;
+  color: #6b7280;
+  border: 2px solid #e5e7eb;
+}
+
+.btn-accion.secundario:hover {
+  border-color: #9ca3af;
+  color: #374151;
+}
+
+/* Mensaje de confirmación cuando está aprobado */
+.mensaje-confirmacion {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  margin-top: 24px;
+  padding: 20px;
+  background: #f8fdff;
+  border: 2px solid #e0f7fa;
+  border-radius: 12px;
+}
+
+.confirmacion-contenido {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.icono-confirmacion {
+  font-size: 24px;
+  color: #00796b;
+}
+
+.texto-confirmacion {
+  font-size: 16px;
+  font-weight: 600;
+  color: #00695c;
+}
+
+.btn-siguiente {
+  padding: 12px 32px;
+  background: linear-gradient(135deg, #00bcd4, #0097a7);
+  color: white;
+  border: none;
+  border-radius: 25px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 188, 212, 0.3);
+}
+
+.btn-siguiente:hover {
+  background: linear-gradient(135deg, #0097a7, #00838f);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 188, 212, 0.4);
+}
+
+.btn-siguiente ion-icon {
+  font-size: 16px;
+}
+
+/* Estilos para la vista de previsualización (Paso 2) */
+.previsualizacion-contenido {
+  padding: 0;
+  background: transparent;
+  margin: 0;
+}
+
+.carta-preview {
+  background: white;
+  border-radius: 0;
+  padding: 30px 40px;
+  border: none;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+  line-height: 1.6;
+  color: #333;
+  box-shadow: none;
+}
+
+.carta-header {
+  display: none;
+}
+
+.carta-seccion {
+  margin-bottom: 30px;
+  border-left: none;
+  padding-left: 0;
+}
+
+.seccion-titulo {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1976d2;
+  margin-bottom: 15px;
+  text-transform: none;
+  letter-spacing: normal;
+  border-left: none;
+  padding-left: 0;
+  background: none;
+}
+
+.carta-contenido {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+}
+
+.carta-contenido p {
+  font-size: 14px;
+  line-height: 1.6;
+  color: #495057;
+  margin-bottom: 12px;
+  text-align: justify;
+}
+
+.carta-contenido p:last-child {
+  margin-bottom: 0;
+}
+
+.carta-contenido p strong {
+  font-weight: 600;
+  color: #333;
+}
+
+/* Estilos para botones de navegación */
+.acciones-paso-navegacion {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 30px;
+  padding: 20px 0;
+}
+
+.btn-navegacion {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 25px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+  min-width: 120px;
+  justify-content: center;
+}
+
+.btn-navegacion.atras {
+  background: #ecf0f1;
+  color: #7f8c8d;
+  border: 2px solid #bdc3c7;
+}
+
+.btn-navegacion.atras:hover {
+  background: #d5dbdb;
+  color: #5d6d7e;
+  transform: translateX(-2px);
+}
+
+.btn-navegacion.siguiente {
+  background: linear-gradient(135deg, #00bcd4, #0097a7);
+  color: white;
+  box-shadow: 0 4px 12px rgba(0, 188, 212, 0.3);
+}
+
+.btn-navegacion.siguiente:hover {
+  background: linear-gradient(135deg, #0097a7, #00838f);
+  transform: translateX(2px);
+  box-shadow: 0 6px 16px rgba(0, 188, 212, 0.4);
+}
+
+.btn-navegacion ion-icon {
+  font-size: 16px;
+}
+
+/* Vista previa del PDF */
+.pdf-preview {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 20px 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.pdf-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.pdf-header ion-icon {
+  font-size: 24px;
+  color: #0ea5e9;
+}
+
+.pdf-header span {
+  font-size: 16px;
+  font-weight: 600;
+  color: #374151;
+}
+
+.pdf-document {
+  background: #f8fafc;
+  border-radius: 8px;
+  padding: 16px;
+  border: 1px solid #e5e7eb;
+}
+
+.pdf-page {
+  background: white;
+  border-radius: 4px;
+  padding: 40px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.universidad-header {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.logo-upeu {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+}
+
+.universidad-info h2,
+.universidad-info h3 {
+  margin: 0;
+  color: #1f2937;
+  text-align: center;
+}
+
+.universidad-info h2 {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.universidad-info h3 {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.carta-contenido h3 {
+  font-size: 12px;
+  text-align: center;
+  color: #374151;
+  margin: 20px 0;
+  font-weight: 600;
+}
+
+.carta-info p,
+.destinatario p,
+.saludo p,
+.cuerpo-carta p,
+.despedida p {
+  font-size: 12px;
+  color: #1f2937;
+  line-height: 1.6;
+  margin: 8px 0;
+}
+
+.destinatario,
+.saludo,
+.despedida {
+  margin: 20px 0;
+}
+
+/* Responsive para detalle */
+@media (max-width: 768px) {
+  .detalle-carta-container {
+    padding: 10px;
+  }
+  
+  .pasos-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  
+  .detalle-header {
+    flex-direction: column;
+    gap: 16px;
+    text-align: center;
+  }
+  
+  .acciones-paso {
+    flex-direction: column;
+  }
+  
+  .btn-accion {
+    width: 100%;
+  }
+  
+  .usuarios-avatares {
+    gap: 24px;
+  }
+  
+  .avatar-info {
+    text-align: center;
+  }
+  
+  .avatar-label {
+    font-size: 10px;
+  }
+  
+  .avatar-value {
+    font-size: 12px;
+  }
+  
+  .avatar {
+    width: 48px;
+    height: 48px;
+    font-size: 16px;
+  }
+  
+  .pdf-page {
+    padding: 20px;
+  }
+  
+  .universidad-header {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+/* ==================== ANIMACIONES PARA RENDERIZADO CONDICIONAL ==================== */
+
+/* Vista de tabla (fade-in) */
+.table-view.fade-in {
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Vista de detalle (slide-in desde la derecha) */
+.detail-view.slide-in-right {
+  animation: slideInRight 0.5s ease-out;
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Animaciones para los pasos del formulario */
+.paso-content .fade-in {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+/* ==================== ESTILOS PARA BOTÓN VOLVER ==================== */
+.btn-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-bottom: 20px;
+}
+
+.btn-back:hover {
+  background-color: #5a6268;
+  transform: translateY(-1px);
+}
+
+.btn-back ion-icon {
+  font-size: 16px;
+}
+
+/* ==================== ESTILOS PARA VISTA DE DETALLE ==================== */
+.detail-view {
+  background: #f5f5f5; /* Fondo gris como en la imagen */
+  border-radius: 8px;
+  padding: 20px; /* Padding interno para el espaciado correcto */
+}
+
+/* ==================== CONTENIDO PRINCIPAL ==================== */
+.table-view, 
+.detail-view {
+  margin: 0; /* Sin margen para que tengan el mismo ancho que el header */
+  margin-bottom: 16px; /* Solo margen inferior como el header */
+}
+
+.main-content {
+  padding: 0; /* Eliminar padding para que tenga el mismo ancho que el header */
+}
+
+/* Clases de estado para mostrar/ocultar contenido */
+.hidden {
+  display: none !important;
+}
+
+.visible {
+  display: block;
 }
