@@ -1,0 +1,22 @@
+services:
+  # Desarrollo con hot reload
+  frontend-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: code5_frontend_dev
+    ports:
+      - "4200:4200"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+    command: npm start -- --host 0.0.0.0 --port 4200
+    restart: unless-stopped
+    networks:
+      - code5-dev-network
+
+networks:
+  code5-dev-network:
+    driver: bridge

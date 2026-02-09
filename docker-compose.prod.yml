@@ -1,0 +1,25 @@
+# Configuración específica para servidor/producción
+services:
+  frontend:
+    environment:
+      - NODE_ENV=production
+      - DOMAIN=tu-dominio.com  # Cambiar por tu dominio
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./logs:/var/log/nginx
+      - /etc/ssl/certs:/etc/ssl/certs:ro  # Para certificados SSL
+    labels:
+      - "traefik.enable=true"  # Si usas Traefik
+      - "traefik.http.routers.frontend.rule=Host(`tu-dominio.com`)"
+    restart: unless-stopped
+    
+  # Opcional: Servicio para certificados SSL automáticos
+  certbot:
+    image: certbot/certbot
+    volumes:
+      - /etc/letsencrypt:/etc/letsencrypt
+    command: certonly --webroot -w /var/www/html -d tu-dominio.com --email tu-email@ejemplo.com --agree-tos --non-interactive
+    depends_on:
+      - frontend

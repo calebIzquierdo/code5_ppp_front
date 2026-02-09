@@ -1,0 +1,67 @@
+services:
+  # Aplicación Frontend Angular
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: code5_frontend
+    ports:
+      - "80:80"
+      - "443:443"  # Para HTTPS si es necesario
+    volumes:
+      # Volumen para logs de nginx (opcional)
+      - ./logs:/var/log/nginx
+    environment:
+      - NODE_ENV=production
+    restart: unless-stopped
+    networks:
+      - code5-network
+    
+    # Healthcheck para monitoreo
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:80"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Base de datos (descomentar si es necesario)
+  # db:
+  #   image: postgres:15-alpine
+  #   container_name: code5_db
+  #   environment:
+  #     POSTGRES_DB: code5_db
+  #     POSTGRES_USER: code5_user
+  #     POSTGRES_PASSWORD: your_secure_password
+  #   ports:
+  #     - "5432:5432"
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
+  #   networks:
+  #     - code5-network
+  #   restart: unless-stopped
+
+  # Backend API (descomentar si es necesario)
+  # backend:
+  #   build:
+  #     context: ../backend  # Ajustar la ruta según tu estructura
+  #     dockerfile: Dockerfile
+  #   container_name: code5_backend
+  #   ports:
+  #     - "3000:3000"
+  #   environment:
+  #     - NODE_ENV=production
+  #     - DATABASE_URL=postgresql://code5_user:your_secure_password@db:5432/code5_db
+  #   depends_on:
+  #     - db
+  #   networks:
+  #     - code5-network
+  #   restart: unless-stopped
+
+volumes:
+  # postgres_data:  # Descomentar si usas base de datos
+  logs:
+
+networks:
+  code5-network:
+    driver: bridge
