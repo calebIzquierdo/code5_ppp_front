@@ -2,29 +2,27 @@
 <nav class="navbar">
   <div class="nav-left">
     <div class="nav-icon">
-      <ion-icon name="file-tray-full-outline"></ion-icon>
-    </div>
+<ion-icon name="file-tray-full-outline"></ion-icon>    </div>
     <div class="nav-titles">
       <h1>Examen CAPSI</h1>
-      <span class="nav-breadcrumb">Prácticas / Examen CAPSI</span>
+      <span>Prácticas / Examen CAPSI</span>
     </div>
   </div>
   <div class="nav-right">
-    <select 
-      class="status-dropdown" 
-      [value]="selectedStatus()" 
-      (change)="onStatusChange($any($event.target).value)"
-      aria-label="Seleccionar estado">
+    <select class="status-dropdown" 
+            [value]="selectedStatus()" 
+            (change)="onStatusChange($any($event.target).value)">
       <option value="apto">Apto</option>
       <option value="no-apto">No Apto</option>
       <option value="pendiente">Pendiente</option>
     </select>
-    <button class="btn-refresh" aria-label="Actualizar">
-      <ion-icon name="refresh-outline"></ion-icon>
-      <span class="btn-text">Actualizar</span>
+    <button class="btn-refresh">
+      <ion-icon name="refresh-outline"></ion-icon> Actualizar
     </button>
   </div>
 </nav>
+
+<!-- CONTENIDO CONDICIONAL SEGÚN ESTADO -->
 
 <!-- VISTA PARA ESTADO "APTO" -->
 <div class="main-container" *ngIf="selectedStatus() === 'apto'">
@@ -44,17 +42,17 @@
       <div class="info-grid">
         <div class="info-item">
           <ion-icon name="calendar-outline"></ion-icon>
-          <span>Fecha de Evaluación: 15/04/2025</span>
+          Fecha de Evaluación: 15/04/2025
         </div>
         <div class="info-item">
           <ion-icon name="shield-checkmark-outline"></ion-icon>
-          <span>Fecha de Vigencia: 20/04/2025</span>
+          Fecha de Vigencia: 20/04/2025
         </div>
       </div>
 
       <div class="evaluator-info">
         <ion-icon name="person-outline"></ion-icon>
-        <span>Evaluador: Lic. Juan Pérez Gómez</span>
+        Evaluador: Lic. Juan Pérez Gómez
       </div>
 
       <div class="card-footer-text">
