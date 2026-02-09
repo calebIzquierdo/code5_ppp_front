@@ -1,0 +1,207 @@
+/* MODAL STYLES */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 12px;
+  max-width: 1200px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  animation: slideIn 0.3s ease;
+}
+
+.close-btn {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  background: none;
+  border: none;
+  font-size: 28px;
+  color: #999;
+  cursor: pointer;
+  z-index: 1001;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.close-btn:hover {
+  color: #333;
+}
+
+/* ESTILOS DEL CONTENIDO - ADAPTADOS DEL HTML ORIGINAL */
+.container {
+  padding: 30px;
+}
+
+.page-title {
+  color: #2c6da6;
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+
+hr {
+  border: 0;
+  border-top: 1px solid #ddd;
+  margin: 20px 0;
+}
+
+/* Información del Estudiante */
+.student-info {
+  margin-bottom: 30px;
+}
+
+.student-name {
+  font-size: 18px;
+  font-weight: 700;
+  color: black;
+  margin-bottom: 8px;
+}
+
+.student-detail {
+  font-size: 15px;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+/* Contenedor de la Tabla */
+.history-container {
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.table-header-bar {
+  background-color: #dbeffe;
+  color: #2c6da6;
+  padding: 15px 20px;
+  font-weight: 700;
+  font-size: 15px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th {
+  padding: 15px;
+  text-align: center;
+  font-weight: 700;
+  font-size: 14px;
+  color: black;
+  border-bottom: 1px solid #e0e0e0;
+  border-right: 1px solid #e0e0e0;
+  background: white;
+}
+
+th:last-child {
+  border-right: none;
+}
+
+td {
+  padding: 15px;
+  text-align: center;
+  vertical-align: middle;
+  font-size: 14px;
+  color: #333;
+  border-bottom: 1px solid #e0e0e0;
+  border-right: 1px solid #e0e0e0;
+}
+
+td:last-child {
+  border-right: none;
+}
+
+tr:last-child td {
+  border-bottom: none;
+}
+
+/* Badges de Estado */
+.badge {
+  padding: 6px 20px;
+  border-radius: 20px;
+  font-weight: 700;
+  font-size: 13px;
+  display: inline-block;
+}
+
+.badge-apto {
+  background-color: #aaedcd;
+  color: #155724;
+}
+
+.badge-no-apto {
+  background-color: #ffe0e3;
+  color: #d63346;
+}
+
+/* Columna de comentarios */
+.col-comment {
+  text-align: left;
+  padding-left: 30px;
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .modal-content {
+    width: 95%;
+    max-height: 95vh;
+  }
+  
+  .container {
+    padding: 20px;
+  }
+  
+  .page-title {
+    font-size: 18px;
+  }
+  
+  th, td {
+    padding: 10px 8px;
+    font-size: 12px;
+  }
+  
+  .col-comment {
+    padding-left: 15px;
+  }
+}

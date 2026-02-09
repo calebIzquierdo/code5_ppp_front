@@ -1,0 +1,176 @@
+<!-- HEADER SUPERIOR -->
+<nav class="navbar">
+  <div class="nav-left">
+    <div class="nav-icon">
+      <ion-icon name="file-tray-full-outline"></ion-icon>
+    </div>
+    <div class="nav-titles">
+      <h1>Examen CAPSI</h1>
+      <span class="nav-breadcrumb">Prácticas / Examen CAPSI</span>
+    </div>
+  </div>
+  <div class="nav-right">
+    <select 
+      class="status-dropdown" 
+      [value]="selectedStatus()" 
+      (change)="onStatusChange($any($event.target).value)"
+      aria-label="Seleccionar estado">
+      <option value="apto">Apto</option>
+      <option value="no-apto">No Apto</option>
+      <option value="pendiente">Pendiente</option>
+    </select>
+    <button class="btn-refresh" aria-label="Actualizar">
+      <ion-icon name="refresh-outline"></ion-icon>
+      <span class="btn-text">Actualizar</span>
+    </button>
+  </div>
+</nav>
+
+<!-- VISTA PARA ESTADO "APTO" -->
+<div class="main-container" *ngIf="selectedStatus() === 'apto'">
+  <div class="card">
+    <div class="card-header">
+      <h2>Examen CAPSI</h2>
+      <p>Estado del Estudiante</p>
+    </div>
+    <div class="card-body">
+      <div class="status-box-large status-apto">
+        APTO
+      </div>
+      <div class="status-message">
+        Puedes realizar tus prácticas pre profesionales con normalidad
+      </div>
+
+      <div class="info-grid">
+        <div class="info-item">
+          <ion-icon name="calendar-outline"></ion-icon>
+          <span>Fecha de Evaluación: 15/04/2025</span>
+        </div>
+        <div class="info-item">
+          <ion-icon name="shield-checkmark-outline"></ion-icon>
+          <span>Fecha de Vigencia: 20/04/2025</span>
+        </div>
+      </div>
+
+      <div class="evaluator-info">
+        <ion-icon name="person-outline"></ion-icon>
+        <span>Evaluador: Lic. Juan Pérez Gómez</span>
+      </div>
+
+      <div class="card-footer-text">
+        Si tienes dudas comunícate con coordinación
+      </div>
+    </div>
+  </div>
+
+  <!-- TABLA HISTORIAL -->
+  <div class="card">
+    <div class="card-header">
+      <h2>Historial del Alumno</h2>
+      <p>Historial de evaluaciones CAPSI del alumno</p>
+    </div>
+    
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 20%;">Fecha de Evaluación</th>
+            <th style="width: 15%;">Estado</th>
+            <th style="width: 20%;">Fecha de Vigencia</th>
+            <th style="width: 45%;">Comentario</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>15/07/2025</td>
+            <td><span class="badge badge-no-apto">No Apto</span></td>
+            <td>15/12/2025</td>
+            <td style="text-align: left; padding-left: 20px;">Requiere seguimiento continuo, mostrar avances.</td>
+          </tr>
+          <tr>
+            <td>15/12/2025</td>
+            <td><span class="badge badge-apto">Apto</span></td>
+            <td>15/07/2026</td>
+            <td style="text-align: left; padding-left: 20px;">Requiere seguimiento continuo, mostrar avances.</td>
+          </tr>
+          <tr>
+            <td>15/12/2025</td>
+            <td><span class="badge badge-apto">Apto</span></td>
+            <td>15/07/2026</td>
+            <td style="text-align: left; padding-left: 20px;">Requiere seguimiento continuo, mostrar avances.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- VISTA PARA ESTADO "NO APTO" -->
+<div class="main-container" *ngIf="selectedStatus() === 'no-apto'">
+  <div class="card">
+    <div class="card-header">
+      <h2>Examen CAPSI</h2>
+      <p>Estado del Estudiante</p>
+    </div>
+    <div class="card-body">
+      <div class="status-box-large status-no-apto">
+        NO APTO
+      </div>
+      <div class="status-message">
+        Aún no estás habilitado para<br>iniciar prácticas.
+      </div>
+
+      <div class="separator-line"></div>
+
+      <div class="details-left">
+        <div class="detail-item-left">
+          <ion-icon name="calendar-outline"></ion-icon>
+          <strong>Fecha de examen:</strong> 15/04/2025
+        </div>
+        <div class="detail-item-left">
+          <ion-icon name="time-outline"></ion-icon>
+          <strong>Última actualización:</strong> 20/04/2025
+        </div>
+      </div>
+
+      <div class="card-footer-text">
+        Si tienes dudas comunícate con coordinación
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- VISTA PARA ESTADO "PENDIENTE" -->
+<div class="main-container" *ngIf="selectedStatus() === 'pendiente'">
+  <div class="card">
+    <div class="card-header">
+      <h2>Examen CAPSI</h2>
+      <p>Estado del Estudiante</p>
+    </div>
+    <div class="card-body">
+      <div class="status-box-large status-pendiente">
+        PENDIENTE
+      </div>
+      <div class="status-message">
+        Tu resultado está en proceso.<br>Revisa más tarde.
+      </div>
+
+      <div class="separator-line"></div>
+
+      <div class="details-left">
+        <div class="detail-item-left">
+          <ion-icon name="calendar-outline"></ion-icon>
+          <strong>Fecha de examen:</strong> 15/04/2025
+        </div>
+        <div class="detail-item-left">
+          <ion-icon name="time-outline"></ion-icon>
+          <strong>Última actualización:</strong> 20/04/2025
+        </div>
+      </div>
+
+      <div class="card-footer-text">
+        Si tienes dudas comunícate con coordinación
+      </div>
+    </div>
+  </div>
+</div>

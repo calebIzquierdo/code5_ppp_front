@@ -1,0 +1,1155 @@
+/* RESET Y BASE */
+* {
+  box-sizing: border-box;
+}
+
+/* HEADER SUPERIOR */
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 20px 28px;
+  margin-bottom: 28px;
+
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex: 1;
+  min-width: 0; /* Permite que el contenido se ajuste */
+}
+
+/* BOTÓN VOLVER EN HEADER */
+.back-btn-header {
+  background: #08C1B8;
+  border: 2px solid #08C1B8;
+  color: white;
+  padding: 8px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  transition: all 0.2s ease;
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+}
+
+.back-btn-header:hover {
+  background: #06a399;
+  border-color: #06a399;
+  color: white;
+}
+
+.header-icon {
+  width: 48px;
+  height: 48px;
+  min-width: 48px; /* Evita que se encoja */
+  border-radius: 50%;
+  background: #0a3d78;
+  color: #ffffff;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 22px;
+}
+
+.header-text {
+  min-width: 0; /* Permite que el texto se trunque si es necesario */
+}
+
+.header-text h1 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: #0a3d78;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.header-text span {
+  font-size: 14px;
+  color: #6b7280;
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* BOTÓN ACTUALIZAR */
+.btn-refresh {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 10px 22px;
+  border-radius: 22px;
+  border: 2px solid #0a3d78;
+  background: #ffffff;
+  color: #0a3d78;
+
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.25s ease;
+  white-space: nowrap;
+}
+
+.btn-refresh:hover {
+  background: #0a3d78;
+  color: #ffffff;
+}
+
+/* CARD CONTENIDO */
+.page-card {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 28px;
+  min-height: 300px;
+  height: auto;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08);
+}
+
+.page-card h2 {
+  margin: 0;
+  font-size: 20px;
+  color: #0a3d78;
+}
+
+/* HEADER DEL CARD */
+.card-header {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: 12px;
+}
+
+.card-header h2 {
+  margin: 0;
+  font-size: 20px;
+  color: #0a3d78;
+}
+
+.campus-info {
+  display: flex;
+  align-items: center;
+}
+
+.campus-label {
+  display: inline-block;
+  background: #e3f2fd;
+  color: #1976d2;
+  padding: 6px 16px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.page-card hr {
+  margin: 16px 0 24px;
+  border: none;
+  border-top: 1px solid #e5e7eb;
+}
+
+/* BUSCADOR EN POSICIÓN ORIGINAL */
+.search-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.search-row label {
+  font-weight: 600;
+  color: #0a3d78;
+  white-space: nowrap;
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 0 1 auto;
+}
+
+.search-box input {
+  width: 201px;
+  height: 38px;
+  padding: 0 16px;
+  border-radius: 16px;
+  border: 1px solid #d1d5db;
+  outline: none;
+  font-size: 14px;
+  opacity: 1;
+  background: white;
+}
+
+.search-box input:focus {
+  border-color: #0a3d78;
+}
+
+.search-box button {
+  border: none;
+  background: #cfe8ff;
+  color: #0a3d78;
+  cursor: pointer;
+  font-size: 18px;
+  width: 62px;
+  min-width: 62px;
+  height: 38px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.25s ease;
+  opacity: 1;
+}
+
+.search-box button:hover {
+  background: #0a3d78;
+  color: #ffffff;
+}
+
+/* SECCIÓN DE RESULTADOS */
+.results-section {
+  margin-top: 32px;
+}
+
+/* CONTENEDOR DE LA TABLA CON DISEÑO EXACTO */
+.table-container {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  background: white;
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* BARRA DE BÚSQUEDA EN LA PARTE SUPERIOR (FONDO AZUL CLARO) */
+.search-area {
+  background-color: #dbeffe;
+  padding: 15px 20px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.back-btn {
+  background: transparent;
+  border: 1px solid #2c6da6;
+  color: #2c6da6;
+  padding: 6px 8px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  margin-right: auto;
+  transition: all 0.2s ease;
+}
+
+.back-btn:hover {
+  background: #2c6da6;
+  color: white;
+}
+
+.search-label {
+  color: #2c6da6;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.search-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.search-input {
+  padding: 8px 12px;
+  border: 1px solid white;
+  border-radius: 20px 0 0 20px;
+  outline: none;
+  font-size: 13px;
+  width: 200px;
+}
+
+.search-btn {
+  background-color: #2c6da6;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 0 20px 20px 0;
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.search-btn:hover {
+  background-color: #1e4d73;
+}
+
+/* TABLA CON DISEÑO EXACTO */
+.results-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+}
+
+.results-table th {
+  padding: 15px;
+  text-align: center;
+  font-weight: 700;
+  color: black;
+  border-bottom: 1px solid #ddd;
+  border-right: 1px solid #ddd;
+  background: white;
+}
+
+.results-table th:last-child {
+  border-right: none;
+}
+
+.results-table td {
+  padding: 15px;
+  text-align: center;
+  vertical-align: middle;
+  border-right: 1px solid #ddd;
+  color: black;
+  font-weight: 500;
+}
+
+.results-table td:last-child {
+  border-right: none;
+}
+
+.results-table tbody tr {
+  background: white;
+  border-bottom: 1px solid #ddd;
+}
+
+.results-table tbody tr:last-child {
+  border-bottom: none;
+}
+
+/* BADGES DE ESTADO CON DISEÑO EXACTO */
+.status-badge {
+  padding: 6px 25px;
+  border-radius: 20px;
+  font-weight: 700;
+  display: inline-block;
+}
+
+.status-apto {
+  background-color: #aaedcd;
+  color: #155724;
+}
+
+.status-pendiente {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.status-no-apto {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+/* BOTONES DE ACCIÓN CON DISEÑO EXACTO */
+.actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.btn {
+  padding: 6px 15px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.btn-view {
+  background: transparent;
+  border: 1px solid #fbb03b;
+  color: #fbb03b;
+}
+
+.btn-view:hover {
+  background: #fbb03b;
+  color: white;
+}
+
+.btn-new {
+  background-color: #00c0c7;
+  border: 1px solid #00c0c7;
+  color: white;
+}
+
+.btn-new:hover {
+  background-color: #00a8ae;
+}
+
+.btn ion-icon {
+  font-size: 14px;
+}
+
+/* SIN RESULTADOS */
+.no-results {
+  text-align: center;
+  padding: 40px;
+  color: #6b7280;
+  font-style: italic;
+}
+
+.no-results p {
+  margin: 0;
+  font-size: 14px;
+}
+
+/* VISTA DE DETALLE DEL ESTUDIANTE */
+.student-detail-view {
+  animation: slideIn 0.3s ease;
+}
+
+.page-title {
+  font-family: 'Open Sans', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: 700;
+  font-style: normal;
+  font-size: 20px;
+  line-height: 100%;
+  letter-spacing: 0.5%;
+  color: #2c6da6;
+  margin-bottom: 15px;
+}
+
+/* Información del Estudiante */
+.student-info {
+  margin-bottom: 30px;
+}
+
+.student-name {
+  font-size: 18px;
+  font-weight: 700;
+  color: black;
+  margin-bottom: 8px;
+}
+
+.student-detail {
+  font-size: 15px;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+/* Contenedor de la Tabla de Historial */
+.history-container {
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.table-header-bar {
+  background-color: #dbeffe;
+  color: #2c6da6;
+  padding: 15px 20px;
+  font-weight: 700;
+  font-size: 15px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.history-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.history-table th {
+  padding: 15px;
+  text-align: center;
+  font-weight: 700;
+  font-size: 14px;
+  color: black;
+  border-bottom: 1px solid #e0e0e0;
+  border-right: 1px solid #e0e0e0;
+  background: white;
+}
+
+.history-table th:last-child {
+  border-right: none;
+}
+
+.history-table td {
+  padding: 15px;
+  text-align: center;
+  vertical-align: middle;
+  font-size: 14px;
+  color: #333;
+  border-bottom: 1px solid #e0e0e0;
+  border-right: 1px solid #e0e0e0;
+}
+
+.history-table td:last-child {
+  border-right: none;
+}
+
+.history-table tr:last-child td {
+  border-bottom: none;
+}
+
+/* Badges de Estado en Historial */
+.badge {
+  padding: 6px 20px;
+  border-radius: 20px;
+  font-weight: 700;
+  font-size: 13px;
+  display: inline-block;
+}
+
+.badge-apto {
+  background-color: #aaedcd;
+  color: #155724;
+}
+
+.badge-no-apto {
+  background-color: #ffe0e3;
+  color: #d63346;
+}
+
+/* Columna de comentarios */
+.col-comment {
+  text-align: left;
+  padding-left: 30px;
+}
+
+/* Animación de entrada */
+@keyframes slideIn {
+  from {
+    transform: translateX(50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* VISTA DE NUEVA EVALUACIÓN */
+.new-evaluation-view {
+  animation: slideIn 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.eval-card {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  border: 1px solid #f0f0f0;
+}
+
+.eval-card h2 {
+  color: #2c6da6;
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+
+.eval-card h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: black;
+  margin-bottom: 15px;
+}
+
+.eval-card hr {
+  border: 0;
+  border-top: 1px solid #e0e0e0;
+  margin-bottom: 20px;
+}
+
+/* Información del estudiante */
+.student-info {
+  margin-bottom: 25px;
+}
+
+.student-name {
+  font-weight: 700;
+  font-size: 16px;
+  margin-bottom: 5px;
+  color: black;
+}
+
+.student-meta {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 4px;
+}
+
+/* Lista de última evaluación */
+.last-eval-list {
+  list-style: none;
+  padding: 0;
+}
+
+.last-eval-list li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+  font-size: 14px;
+  color: #333;
+}
+
+.last-eval-list ion-icon {
+  width: 20px;
+  font-size: 16px;
+  color: #7fa1b9;
+}
+
+/* Grid del formulario */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 40px;
+  row-gap: 25px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: #7fa1b9;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.form-label ion-icon {
+  font-size: 14px;
+}
+
+/* Input wrapper para iconos */
+.input-wrapper {
+  position: relative;
+}
+
+.input-icon {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #888;
+  pointer-events: none;
+  font-size: 16px;
+}
+
+/* Inputs estilizados */
+.form-control {
+  background-color: #f4f8fb;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  padding: 12px 15px;
+  font-size: 14px;
+  color: #555;
+  outline: none;
+  width: 100%;
+  transition: border 0.2s;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+.form-control:focus {
+  border: 1px solid #ccc;
+  background-color: white;
+}
+
+.form-control::placeholder {
+  color: #aaa;
+}
+
+/* Textarea */
+textarea.form-control {
+  resize: none;
+  height: 100px;
+  padding-right: 15px;
+}
+
+/* Select styling */
+select.form-control {
+  cursor: pointer;
+  padding-right: 45px;
+}
+
+/* Botón Guardar */
+.form-actions {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+}
+
+.btn-save {
+  background-color: #bbf0f3;
+  color: #008f96;
+  border: none;
+  padding: 10px 25px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  transition: opacity 0.2s ease;
+}
+
+.btn-save:hover {
+  opacity: 0.9;
+}
+
+/* Responsive para formulario */
+@media (max-width: 768px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+    column-gap: 0;
+  }
+  
+  .eval-card {
+    padding: 20px;
+  }
+}
+
+/* TABLETS (pantallas menores a 768px) */
+@media (max-width: 768px) {
+  .page-header {
+    padding: 16px 20px;
+    margin-bottom: 20px;
+    border-radius: 16px;
+  }
+
+  .header-left {
+    gap: 12px;
+  }
+
+  .header-icon {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    font-size: 20px;
+  }
+
+  .header-text h1 {
+    font-size: 18px;
+  }
+
+  .header-text span {
+    font-size: 12px;
+  }
+
+  .btn-refresh {
+    padding: 8px 16px;
+    font-size: 13px;
+  }
+
+  .page-card {
+    padding: 20px;
+    border-radius: 16px;
+  }
+
+  .page-card h2 {
+    font-size: 18px;
+  }
+
+  .search-row {
+    gap: 12px;
+  }
+
+  .search-box input {
+    width: 180px; /* Reducido para tablets */
+  }
+
+  /* Tabla responsive para tablets */
+  .table-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .results-table,
+  .history-table {
+    min-width: 600px;
+    font-size: 13px;
+  }
+
+  .results-table th,
+  .results-table td,
+  .history-table th,
+  .history-table td {
+    padding: 10px 8px;
+  }
+
+  /* Campus label más pequeño */
+  .campus-label {
+    font-size: 11px;
+    padding: 4px 12px;
+  }
+
+  /* Card header wrap en tablets */
+  .card-header {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+}
+
+/* MÓVILES GRANDES (pantallas menores a 576px) */
+@media (max-width: 576px) {
+  .page-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+    padding: 16px;
+  }
+
+  .header-left {
+    justify-content: flex-start;
+  }
+
+  .btn-refresh {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .page-card {
+    padding: 16px;
+  }
+
+  .search-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .search-row label {
+    text-align: left;
+  }
+
+  .search-box {
+    width: 100%;
+  }
+
+  .search-box input {
+    width: 100%; /* Ocupa todo el ancho en móviles */
+  }
+
+  /* Tablas en móviles grandes */
+  .results-table,
+  .history-table {
+    min-width: 500px;
+    font-size: 12px;
+  }
+
+  .results-table th,
+  .results-table td,
+  .history-table th,
+  .history-table td {
+    padding: 8px 6px;
+  }
+
+  /* Search area en móvil */
+  .search-area {
+    padding: 12px 16px;
+    justify-content: center;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  /* Botones de acción en tablas */
+  .action-btn {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+
+  /* Actions container responsive */
+  .actions {
+    flex-direction: column;
+    gap: 6px;
+    align-items: stretch;
+  }
+
+  .btn {
+    font-size: 12px;
+    padding: 8px 12px;
+    justify-content: center;
+  }
+
+  /* Card header completamente stacked */
+  .card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .campus-label {
+    align-self: flex-start;
+  }
+
+  /* Nueva evaluación en móvil */
+  .btn-new-eval {
+    width: 100%;
+    justify-content: center;
+    margin-top: 8px;
+  }
+
+  /* Formulario responsive */
+  .form-field {
+    margin-bottom: 16px;
+  }
+
+  .form-field label {
+    font-size: 14px;
+  }
+
+  .form-field input,
+  .form-field textarea {
+    font-size: 14px;
+    padding: 12px;
+  }
+}
+
+/* MÓVILES PEQUEÑOS (pantallas menores a 400px) */
+@media (max-width: 400px) {
+  .page-header {
+    padding: 12px;
+    border-radius: 12px;
+  }
+
+  .header-icon {
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    font-size: 18px;
+  }
+
+  .header-text h1 {
+    font-size: 16px;
+  }
+
+  .header-text span {
+    font-size: 11px;
+  }
+
+  .btn-refresh {
+    padding: 10px 14px;
+    font-size: 12px;
+    gap: 6px;
+  }
+
+  .btn-refresh ion-icon {
+    font-size: 16px;
+  }
+
+  .page-card {
+    padding: 14px;
+    border-radius: 12px;
+  }
+
+  .page-card h2 {
+    font-size: 16px;
+  }
+
+  .search-row label {
+    font-size: 14px;
+  }
+
+  .search-box input {
+    height: 38px;
+    font-size: 13px;
+  }
+
+  .search-box button {
+    width: 52px;
+    min-width: 52px;
+    height: 36px;
+    font-size: 16px;
+  }
+
+  /* Search area muy compacta */
+  .search-area {
+    padding: 10px 12px;
+  }
+
+  .search-area input {
+    width: 100%;
+    font-size: 13px;
+  }
+
+  /* Tablas muy compactas */
+  .results-table,
+  .history-table {
+    min-width: 400px;
+    font-size: 11px;
+  }
+
+  .results-table th,
+  .results-table td,
+  .history-table th,
+  .history-table td {
+    padding: 6px 4px;
+  }
+
+  /* Campus label muy pequeño */
+  .campus-label {
+    font-size: 10px;
+    padding: 3px 8px;
+    border-radius: 12px;
+  }
+
+  /* Botones de acción muy pequeños */
+  .action-btn {
+    padding: 5px 8px;
+    font-size: 11px;
+    border-radius: 12px;
+  }
+
+  /* Back button más pequeño */
+  .back-btn-header {
+    width: 36px;
+    height: 36px;
+    font-size: 16px;
+  }
+
+  /* Texto del breadcrumb oculto en pantallas muy pequeñas */
+  .header-text span {
+    display: none;
+  }
+
+  /* Formulario muy compacto */
+  .form-field input,
+  .form-field textarea {
+    font-size: 13px;
+    padding: 10px;
+  }
+
+  .btn-save {
+    width: 100%;
+    padding: 12px;
+    font-size: 13px;
+  }
+}
+
+/* PANTALLAS EXTRA PEQUEÑAS (pantallas menores a 320px) */
+@media (max-width: 320px) {
+  .page-header {
+    padding: 10px;
+    gap: 12px;
+  }
+
+  .header-left {
+    gap: 8px;
+  }
+
+  .header-icon {
+    width: 32px;
+    height: 32px;
+    font-size: 16px;
+  }
+
+  .header-text h1 {
+    font-size: 14px;
+  }
+
+  .btn-refresh {
+    padding: 8px 12px;
+    font-size: 11px;
+  }
+
+  .page-card {
+    padding: 12px;
+  }
+
+  .page-card h2 {
+    font-size: 15px;
+  }
+
+  .results-table,
+  .history-table {
+    min-width: 320px;
+    font-size: 10px;
+  }
+
+  .search-area {
+    padding: 8px 10px;
+  }
+
+  .search-area input {
+    font-size: 12px;
+    padding: 8px;
+  }
+
+  .campus-label {
+    font-size: 9px;
+    padding: 2px 6px;
+  }
+
+  .action-btn {
+    padding: 4px 6px;
+    font-size: 10px;
+  }
+
+  .btn-text {
+    display: none;
+  }
+
+  /* Status badges muy pequeños */
+  .status-badge {
+    padding: 3px 12px;
+    font-size: 10px;
+  }
+
+  /* Actions muy compactas */
+  .actions {
+    gap: 4px;
+  }
+
+  .btn {
+    padding: 6px 8px;
+    font-size: 10px;
+    gap: 3px;
+  }
+
+  /* Formulario ultra compacto */
+  .form-field {
+    margin-bottom: 12px;
+  }
+}

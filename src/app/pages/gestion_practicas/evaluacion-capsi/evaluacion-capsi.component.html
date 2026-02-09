@@ -1,0 +1,266 @@
+<!-- HEADER SUPERIOR -->
+<div class="page-header">
+  <div class="header-left">
+    <!-- Botón volver - aparece en vista de detalle o nueva evaluación -->
+    <button class="back-btn-header" *ngIf="showStudentDetail() || showNewEvaluation()" 
+            (click)="showStudentDetail() ? cerrarDetalle() : cerrarNuevaEvaluacion()" 
+            title="Volver atrás">
+      <ion-icon name="arrow-back-outline"></ion-icon>
+    </button>
+    
+    <div class="header-icon">
+      <ion-icon name="file-tray-full-outline"></ion-icon>
+    </div>
+
+    <div class="header-text">
+      <h1>Evaluación CAPSI</h1>
+      <span>Gestión Prácticas / Evaluación CAPSI</span>
+    </div>
+  </div>
+
+  <button class="btn-refresh">
+    <ion-icon name="refresh-outline"></ion-icon>
+    <span class="btn-text">Actualizar</span>
+  </button>
+</div>
+
+<!-- CARD CONTENIDO -->
+<div class="page-card">
+  
+  <!-- VISTA NORMAL: BUSCADOR Y TABLA DE RESULTADOS -->
+  <div *ngIf="!showStudentDetail() && !showNewEvaluation()">
+    <div class="card-header">
+      <h2>Evaluación CAPSI</h2>
+      <!-- Campus badge solo aparece después de hacer búsqueda -->
+      <div class="campus-info" *ngIf="showResults()">
+        <span class="campus-label">Campus - Tarapoto</span>
+      </div>
+    </div>
+    <hr>
+
+    <!-- BUSCADOR EN POSICIÓN ORIGINAL - SOLO SE MUESTRA ANTES DE BUSCAR -->
+    <div class="search-row" *ngIf="!showResults()">
+      <label>Código Universitario:</label>
+      <div class="search-box">
+        <input 
+          type="text" 
+          placeholder="Digite 123"
+          [value]="searchTerm()"
+          (input)="searchTerm.set($any($event.target).value)"
+          (keyup.enter)="onSearch()">
+        <button (click)="onSearch()">
+          <ion-icon name="search-outline"></ion-icon>
+        </button>
+      </div>
+    </div>
+
+    <!-- TABLA DE RESULTADOS - APARECE DESPUÉS DE BUSCAR -->
+    <div class="results-section" *ngIf="showResults()">
+      <div class="table-container">
+        <!-- BARRA DE BÚSQUEDA EN LA PARTE SUPERIOR DE LA TABLA -->
+        <div class="search-area">
+          <button class="back-btn" (click)="backToSearch()" title="Nueva búsqueda">
+            <ion-icon name="arrow-back-outline"></ion-icon>
+          </button>
+          <span class="search-label">Código Universitario:</span>
+          <div class="search-wrapper">
+            <input 
+              type="text" 
+              class="search-input" 
+              placeholder="Digite 123"
+              [value]="searchTerm()"
+              (input)="searchTerm.set($any($event.target).value); onSearch()"
+              (keyup.enter)="onSearch()">
+            <button class="search-btn" (click)="onSearch()">
+              <ion-icon name="search-outline"></ion-icon>
+            </button>
+          </div>
+        </div>
+
+        <!-- TABLA -->
+        <div *ngIf="estudiantesFiltrados().length > 0">
+          <table class="results-table">
+            <thead>
+              <tr>
+                <th style="width: 25%;">Nombre Completo</th>
+                <th style="width: 25%;">Programa de Estudio</th>
+                <th style="width: 20%;">Estado</th>
+                <th style="width: 30%;">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let estudiante of estudiantesFiltrados()">
+                <td>{{ estudiante.nombreCompleto }}</td>
+                <td>{{ estudiante.programaEstudio }}</td>
+                <td>
+                  <span class="status-badge" 
+                        [class.status-apto]="estudiante.estado === 'Apto'"
+                        [class.status-pendiente]="estudiante.estado === 'Pendiente'"
+                        [class.status-no-apto]="estudiante.estado === 'No Apto'">
+                    {{ estudiante.estado }}
+                  </span>
+                </td>
+                <td>
+                  <div class="actions">
+                    <button class="btn btn-view" (click)="verEstudiante(estudiante)">
+                      <ion-icon name="eye-outline"></ion-icon> Ver
+                    </button>
+                    <button class="btn btn-new" (click)="nuevoRegistro(estudiante)">
+                      <ion-icon name="create-outline"></ion-icon> Nuevo
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="no-results" *ngIf="estudiantesFiltrados().length === 0 && searchTerm().length >= 1">
+          <p>No se encontraron resultados para "{{ searchTerm() }}"</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VISTA DE DETALLE DEL ESTUDIANTE -->
+  <div *ngIf="showStudentDetail() && selectedStudent()" class="student-detail-view">
+    <!-- CONTENIDO DEL DETALLE -->
+    <h1 class="page-title">Evaluación CAPSI - Ficha del Estudiante</h1>
+    
+    <hr>
+
+    <div class="student-info">
+      <div class="student-name">{{ selectedStudent().nombreCompleto }}</div>
+      <div class="student-detail">{{ selectedStudent().codigoUniversitario }}</div>
+      <div class="student-detail">{{ selectedStudent().programaEstudio }}</div>
+    </div>
+
+    <hr>
+
+    <div class="history-container">
+      <div class="table-header-bar">
+        Historial de Evaluación CAPSI
+      </div>
+
+      <table class="history-table">
+        <thead>
+          <tr>
+            <th style="width: 20%">Fecha de Evaluación</th>
+            <th style="width: 15%">Estado</th>
+            <th style="width: 20%">Fecha de Vigencia</th>
+            <th style="width: 45%">Comentario</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>15/07/2025</td>
+            <td><span class="badge badge-no-apto">No Apto</span></td>
+            <td>15/12/2025</td>
+            <td class="col-comment">Requiere seguimiento continuo, mostrar avances.</td>
+          </tr>
+          <tr>
+            <td>15/12/2025</td>
+            <td><span class="badge badge-apto">Apto</span></td>
+            <td>15/07/2026</td>
+            <td class="col-comment">Requiere seguimiento continuo, mostrar avances.</td>
+          </tr>
+          <tr>
+            <td>15/12/2025</td>
+            <td><span class="badge badge-apto">Apto</span></td>
+            <td>15/07/2026</td>
+            <td class="col-comment">Requiere seguimiento continuo, mostrar avances.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- VISTA DE NUEVA EVALUACIÓN -->
+  <div *ngIf="showNewEvaluation() && selectedStudent()" class="new-evaluation-view">
+    <!-- PRIMERA TARJETA: DATOS DEL ESTUDIANTE Y ÚLTIMA EVALUACIÓN -->
+    <div class="eval-card">
+      <h2>Evaluación CAPSI</h2>
+      <hr>
+      
+      <div class="student-info">
+        <div class="student-name">{{ selectedStudent().nombreCompleto }}</div>
+        <div class="student-meta">{{ selectedStudent().codigoUniversitario }}</div>
+        <div class="student-meta">{{ selectedStudent().programaEstudio }}</div>
+      </div>
+
+      <h3>Última Evaluación:</h3>
+      <ul class="last-eval-list">
+        <li>
+          <ion-icon name="calendar-outline"></ion-icon>
+          <strong>Fecha de Evaluación:</strong>&nbsp; 15/04/2025
+        </li>
+        <li>
+          <ion-icon name="shield-half-outline"></ion-icon>
+          <strong>Fecha de Vigencia:</strong>&nbsp; 20/04/2025
+        </li>
+        <li>
+          <ion-icon name="person-outline"></ion-icon>
+          <strong>Evaluador:</strong>&nbsp; Lic. Juan Pérez Gómez
+        </li>
+      </ul>
+    </div>
+
+    <!-- SEGUNDA TARJETA: FORMULARIO DE NUEVA EVALUACIÓN -->
+    <div class="eval-card">
+      <h2>Evaluación CAPSI - Ficha del Estudiante</h2>
+      <hr>
+      
+      <h3>Nueva Evaluación</h3>
+
+      <form class="form-grid">
+        <div class="form-group">
+          <label class="form-label">
+            <ion-icon name="calendar-outline"></ion-icon> Fecha de Evaluación:
+          </label>
+          <div class="input-wrapper">
+            <input 
+              type="date" 
+              class="form-control" 
+              [value]="evaluationDate()"
+              (input)="evaluationDate.set($any($event.target).value)">
+            <ion-icon name="calendar-outline" class="input-icon"></ion-icon>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Estado</label>
+          <div class="input-wrapper">
+            <select class="form-control">
+              <option value="">Selecciona Estado</option>
+              <option value="Apto">Apto</option>
+              <option value="No Apto">No Apto</option>
+            </select>
+            <ion-icon name="chevron-down-outline" class="input-icon"></ion-icon>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">
+            <ion-icon name="shield-half-outline"></ion-icon> Fecha de Vigencia:
+          </label>
+          <div class="input-wrapper">
+            <input type="date" class="form-control" placeholder="dd/mm/aaaa">
+            <ion-icon name="calendar-outline" class="input-icon"></ion-icon>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Comentario</label>
+          <textarea class="form-control" placeholder="Digita tu comentario"></textarea>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn-save" (click)="guardarEvaluacion()">
+            <ion-icon name="checkmark-outline"></ion-icon> Guardar
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+</div>

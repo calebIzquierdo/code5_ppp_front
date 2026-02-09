@@ -5,6 +5,8 @@ import { EmpresaComponent } from './pages/gestion_practicas/empresa/empresa.comp
 import { CartaPresentacionComponent } from './pages/mis_practicas/carta-presentacion/carta-presentacion.component';
 import { GestionPracticasComponent } from './pages/gestion_practicas/gestion-cartas/gestion-cartas.component';
 import { RoleGuard } from './core/security/guards/role.guard';
+import { EvaluacionCapsiComponent } from './pages/gestion_practicas/evaluacion-capsi/evaluacion-capsi.component';
+import { EstadoCapsiComponent } from './pages/mis_practicas/estado-capsi/estado-capsi.component';
 
 export const routes: Routes = [
   {
@@ -43,7 +45,25 @@ export const routes: Routes = [
         data: {
           requiredRole: ['admin', 'reviewer']
         }
+      },
+      {
+        path: 'evaluacion-capsi',
+        component: EvaluacionCapsiComponent,
+        canActivate: [RoleGuard],
+        data: {
+          requiredRole: ['admin', 'reviewer']
+        }
+      },
+      {
+        path: 'estado-capsi',
+        component: EstadoCapsiComponent,
+        canActivate: [RoleGuard],
+        data: {
+          requiredRole: ['student']
+        }
+
       }
+
     ]
   }
 ];

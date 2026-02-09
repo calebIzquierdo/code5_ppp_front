@@ -1,0 +1,57 @@
+<!-- MODAL OVERLAY -->
+<div class="modal-overlay" *ngIf="isVisible()" (click)="onCerrar()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    
+    <!-- BOTÓN CERRAR -->
+    <button class="close-btn" (click)="onCerrar()">
+      <span>&times;</span>
+    </button>
+
+    <!-- CONTENIDO DEL MODAL -->
+    <div class="container">
+      <h1 class="page-title">Evaluación CAPSI - Ficha del Estudiante</h1>
+      
+      <hr>
+
+      <div class="student-info" *ngIf="estudiante">
+        <div class="student-name">{{ estudiante.nombreCompleto }}</div>
+        <div class="student-detail">{{ estudiante.codigoUniversitario }}</div>
+        <div class="student-detail">{{ estudiante.programaEstudio }}</div>
+      </div>
+
+      <hr>
+
+      <div class="history-container">
+        <div class="table-header-bar">
+          Historial de Evaluación CAPSI
+        </div>
+
+        <table>
+          <thead>
+            <tr>
+              <th style="width: 20%">Fecha de Evaluación</th>
+              <th style="width: 15%">Estado</th>
+              <th style="width: 20%">Fecha de Vigencia</th>
+              <th style="width: 45%">Comentario</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let registro of historialData">
+              <td>{{ registro.fechaEvaluacion }}</td>
+              <td>
+                <span class="badge" 
+                      [class.badge-apto]="registro.estado === 'Apto'"
+                      [class.badge-no-apto]="registro.estado === 'No Apto'">
+                  {{ registro.estado }}
+                </span>
+              </td>
+              <td>{{ registro.fechaVigencia }}</td>
+              <td class="col-comment">{{ registro.comentario }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>
